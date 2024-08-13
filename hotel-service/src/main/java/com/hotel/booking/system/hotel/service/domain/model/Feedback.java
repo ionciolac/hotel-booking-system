@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -19,4 +21,8 @@ public class Feedback {
     private String userFullName;
     private String userMessage;
     private double userMark;
+
+    public void generateID() {
+        this.id = randomUUID();
+    }
 }

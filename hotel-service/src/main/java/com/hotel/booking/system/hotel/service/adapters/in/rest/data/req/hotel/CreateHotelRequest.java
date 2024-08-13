@@ -15,7 +15,7 @@ public class CreateHotelRequest {
 
     private String name;
     private Stars stars;
-    private CreateAddressRequest address;
+    private AddressRequest address;
     @JsonProperty("min_price_per_night")
     private Double minPricePerNight;
     @JsonProperty("max_price_per_night")

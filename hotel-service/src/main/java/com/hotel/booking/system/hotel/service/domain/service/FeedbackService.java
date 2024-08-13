@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
 import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class FeedbackService implements FeedbackInPort {
         var hotelId = feedback.getHotelId();
         var userId = feedback.getUserId();
         checkIfUserHasAddFeedbackToHotel(userId, hotelId);
-        feedback.setId(randomUUID());
+        feedback.generateID();
         var hotel = getDBHotel(hotelId);
         var feedbackWrapper = FeedbackWrapper.builder().feedback(feedback).hotel(hotel).build();
         return feedbackOutPort.upsertFeedback(feedbackWrapper);

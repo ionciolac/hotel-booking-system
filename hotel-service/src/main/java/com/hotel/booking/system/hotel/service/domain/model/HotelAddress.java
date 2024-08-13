@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -20,4 +22,8 @@ public class HotelAddress {
     private String postalCode;
     private String street;
     private String buildingNumber;
+
+    public void generateID() {
+        this.id = randomUUID();
+    }
 }

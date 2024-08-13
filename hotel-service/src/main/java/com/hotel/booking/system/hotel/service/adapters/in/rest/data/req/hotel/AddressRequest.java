@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAddressRequest {
+public class AddressRequest {
 
     private String country;
     private String region;

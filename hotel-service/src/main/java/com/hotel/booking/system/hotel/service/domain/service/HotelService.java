@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +22,8 @@ public class HotelService implements HotelInPort {
     public Hotel createHotel(Hotel hotel) {
         checkIfHotelExistOnAddress(hotel);
         var hotelAddress = hotel.getAddress();
-        hotelAddress.setId(randomUUID());
-        hotel.setId(randomUUID());
+        hotelAddress.generateID();
+        hotel.generateID();
         hotel.setAddress(hotelAddress);
         return hotelOutPort.upsertHotel(hotel);
     }
