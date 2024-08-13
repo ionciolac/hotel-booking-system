@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class User {
     private LocalDate dateOfBirth;
     private UserAddress address;
 
-    public void generateUUID() {
-        this.id = UUID.randomUUID();
+    public void generateID() {
+        this.id = randomUUID();
     }
 }

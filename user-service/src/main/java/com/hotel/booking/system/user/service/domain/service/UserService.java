@@ -23,8 +23,8 @@ public class UserService implements UserInPort {
     public User createUser(User user) {
         checkIfUserIsUnique(user);
         var userAddress = user.getAddress();
-        userAddress.generateUUID();
-        user.generateUUID();
+        userAddress.generateID();
+        user.generateID();
         user.setAddress(userAddress);
         return userOutPort.upserUser(user);
     }
