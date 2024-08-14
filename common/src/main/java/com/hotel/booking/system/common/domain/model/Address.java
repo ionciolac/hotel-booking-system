@@ -1,4 +1,4 @@
-package com.hotel.booking.system.hotel.service.domain.model;
+package com.hotel.booking.system.common.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import static java.util.UUID.randomUUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelAddress {
+public class Address {
 
     private UUID id;
     private String country;

@@ -1,5 +1,6 @@
 package com.hotel.booking.system.user.service.domain.model;
 
+import com.hotel.booking.system.common.domain.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private LocalDate dateOfBirth;
-    private UserAddress address;
+    private Address address;
 
     public void generateID() {
         this.id = randomUUID();

@@ -1,4 +1,4 @@
-package com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.hotel;
+package com.hotel.booking.system.common.rest.data.res.address;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressRequest {
+public class AddressResponse {
 
     private String country;
     private String region;

@@ -1,8 +1,8 @@
 package com.hotel.booking.system.common.rest;
 
-import com.hotel.booking.system.common.domain.AlreadyExistException;
-import com.hotel.booking.system.common.domain.NotFoundException;
-import com.hotel.booking.system.common.rest.data.ExceptionResponse;
+import com.hotel.booking.system.common.domain.exception.AlreadyExistException;
+import com.hotel.booking.system.common.domain.exception.NotFoundException;
+import com.hotel.booking.system.common.rest.data.res.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

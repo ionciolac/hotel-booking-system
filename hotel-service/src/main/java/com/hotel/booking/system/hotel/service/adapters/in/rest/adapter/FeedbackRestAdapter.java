@@ -1,6 +1,6 @@
 package com.hotel.booking.system.hotel.service.adapters.in.rest.adapter;
 
-import com.hotel.booking.system.common.rest.data.DeletedResponse;
+import com.hotel.booking.system.common.rest.data.res.DeletedResponse;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.feedback.CreateFeedbackRequest;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.feedback.UpdateFeedbackRequest;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.feedback.FeedbackResponse;

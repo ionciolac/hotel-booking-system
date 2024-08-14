@@ -1,6 +1,7 @@
 package com.hotel.booking.system.user.service.adapters.in.rest.data.req;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hotel.booking.system.common.rest.data.req.address.AddressRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +25,5 @@ public class CreateUserRequest {
     private String phoneNumber;
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
-    private UserAddressRequest address;
+    private AddressRequest address;
 }

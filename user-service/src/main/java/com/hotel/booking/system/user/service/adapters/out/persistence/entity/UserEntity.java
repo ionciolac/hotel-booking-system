@@ -1,21 +1,20 @@
 package com.hotel.booking.system.user.service.adapters.out.persistence.entity;
 
+import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "app_user")
 @Entity
-public class UserEntity {
+public class UserEntity extends EntityAuditing {
 
     @Id
     private UUID id;

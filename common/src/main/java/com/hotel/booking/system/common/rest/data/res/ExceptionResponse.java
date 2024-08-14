@@ -1,16 +1,18 @@
-package com.hotel.booking.system.common.rest.data;
+package com.hotel.booking.system.common.rest.data.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeletedResponse {
+public class ExceptionResponse {
 
-    private Boolean deleted;
+    private Instant date;
     private String message;
 }

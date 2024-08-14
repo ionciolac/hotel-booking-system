@@ -1,29 +1,23 @@
-package com.hotel.booking.system.user.service.domain.model;
+package com.hotel.booking.system.common.rest.data.req.address;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-import static java.util.UUID.randomUUID;
-
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAddress {
+public class AddressRequest {
 
-    private UUID id;
     private String country;
     private String region;
     private String city;
+    @JsonProperty("postal_code")
     private String postalCode;
     private String street;
+    @JsonProperty("building_number")
     private String buildingNumber;
-
-    public void generateID() {
-        this.id = randomUUID();
-    }
 }
