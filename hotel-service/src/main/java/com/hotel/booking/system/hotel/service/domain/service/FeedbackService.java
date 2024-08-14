@@ -46,7 +46,7 @@ public class FeedbackService implements FeedbackInPort {
     public Feedback updateFeedback(Feedback feedback) {
         var id = feedback.getId();
         var dbFeedback = getDBFeedback(id);
-        var hotel = hotelOutPort.getHotel(dbFeedback.getHotelId()).orElse(new Hotel());
+        var hotel = getDBHotel(dbFeedback.getHotelId());
         patch(dbFeedback, feedback);
         var feedbackWrapper = FeedbackWrapper.builder().hotel(hotel).feedback(dbFeedback).build();
         return feedbackOutPort.upsertFeedback(feedbackWrapper);
