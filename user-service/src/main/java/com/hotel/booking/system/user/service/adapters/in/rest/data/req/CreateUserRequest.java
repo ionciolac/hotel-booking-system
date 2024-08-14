@@ -3,13 +3,13 @@ package com.hotel.booking.system.user.service.adapters.in.rest.data.req;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hotel.booking.system.common.rest.data.req.address.AddressRequest;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
-@Builder
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
