@@ -1,17 +1,15 @@
 package com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateRoomRequest extends CommonRoomRequest {

@@ -1,10 +1,7 @@
 package com.hotel.booking.system.user.service.domain.model;
 
 import com.hotel.booking.system.common.domain.model.Address;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,7 +9,8 @@ import java.util.UUID;
 import static java.util.UUID.randomUUID;
 
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

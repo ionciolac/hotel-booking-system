@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "app_user")

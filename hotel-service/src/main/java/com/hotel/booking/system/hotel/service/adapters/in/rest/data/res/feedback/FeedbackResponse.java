@@ -2,15 +2,13 @@ package com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.feedbac
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hotel.booking.system.common.common.FeedbackMark;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackResponse {
