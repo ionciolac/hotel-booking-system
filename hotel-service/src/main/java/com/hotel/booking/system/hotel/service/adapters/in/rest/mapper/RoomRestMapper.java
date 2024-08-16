@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring")
 public interface RoomRestMapper {
 
+    @Mapping(target = "roomBookings", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "currency", ignore = true)
     @Mapping(target = "hotel.id", source = "hotelId")
     Room toRoom(CreateRoomRequest createRoomRequest);
 
+    @Mapping(target = "roomBookings", ignore = true)
     @Mapping(target = "floor", ignore = true)
     @Mapping(target = "doorNumber", ignore = true)
     @Mapping(target = "roomType", ignore = true)

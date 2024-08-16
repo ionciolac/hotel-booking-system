@@ -4,14 +4,14 @@ import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass

@@ -5,11 +5,12 @@ import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "rooms")
@@ -18,6 +19,7 @@ public class RoomEntity extends EntityAuditing {
 
     @Id
     private UUID id;
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
@@ -28,4 +30,6 @@ public class RoomEntity extends EntityAuditing {
     private Boolean isRoomAvailable;
     private double pricePerNight;
     private String currency;
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private Set<RoomBookingEntity> roomBookings;
 }

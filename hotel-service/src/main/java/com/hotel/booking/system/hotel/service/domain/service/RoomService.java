@@ -5,9 +5,10 @@ import com.hotel.booking.system.common.domain.exception.AlreadyExistException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
-import com.hotel.booking.system.hotel.service.ports.in.RoomInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
 import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
 import com.hotel.booking.system.hotel.service.ports.out.RoomOutPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class RoomService implements RoomInPort {
     private final RoomOutPort roomOutPort;
     private final HotelOutPort hotelOutPort;
 
+    @Transactional
     @Override
     public Room cretaeRoom(Room room) {
         var hotelId = room.getHotel().getId();
@@ -36,6 +38,7 @@ public class RoomService implements RoomInPort {
         return roomOutPort.upsertRoom(room);
     }
 
+    @Transactional
     @Override
     public Room updateRoom(Room room) {
         Room dbRoom = getDBRoom(room.getId());
@@ -43,17 +46,20 @@ public class RoomService implements RoomInPort {
         return roomOutPort.upsertRoom(dbRoom);
     }
 
+    @Transactional
     @Override
     public void deleteRoom(UUID id) {
         getDBRoom(id);
         roomOutPort.deleteRoom(id);
     }
 
+    @Transactional
     @Override
     public Room getRoom(UUID id) {
         return getDBRoom(id);
     }
 
+    @Transactional
     @Override
     public Page<Room> getRooms(UUID hotelId, Integer floor, RoomType roomType, Pageable pageable) {
         Hotel hotel = getDBHotel(hotelId);

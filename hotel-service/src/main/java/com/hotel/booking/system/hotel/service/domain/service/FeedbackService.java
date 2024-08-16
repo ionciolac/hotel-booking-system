@@ -6,7 +6,7 @@ import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Feedback;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.wrapper.FeedbackWrapper;
-import com.hotel.booking.system.hotel.service.ports.in.FeedbackInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.FeedbackInPort;
 import com.hotel.booking.system.hotel.service.ports.out.FeedbackOutPort;
 import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
 import lombok.RequiredArgsConstructor;

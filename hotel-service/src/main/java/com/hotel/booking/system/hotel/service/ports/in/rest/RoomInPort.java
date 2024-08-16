@@ -1,4 +1,4 @@
-package com.hotel.booking.system.hotel.service.ports.in;
+package com.hotel.booking.system.hotel.service.ports.in.rest;
 
 import com.hotel.booking.system.common.common.RoomType;
 import com.hotel.booking.system.hotel.service.domain.model.Room;

@@ -1,16 +1,14 @@
 package com.hotel.booking.system.hotel.service.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Feedback {

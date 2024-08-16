@@ -5,7 +5,7 @@ import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.feedback
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.feedback.UpdateFeedbackRequest;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.feedback.FeedbackResponse;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.mapper.FeedbackRestMapper;
-import com.hotel.booking.system.hotel.service.ports.in.FeedbackInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.FeedbackInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

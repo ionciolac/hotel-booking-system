@@ -9,14 +9,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
-public interface RoomPersistenceMapper {
+public interface RoomBookingPersistenceMapper {
 
-    @Named("roomRoomInRoomBookings")
-    @Mapping(target = "room", ignore = true)
-    RoomBooking roomBookingEntityToRoomBooking(RoomBookingEntity roomBookingEntity);
+    @Named("withoutRoomBookingsInRoom")
+    @Mapping(target = "roomBookings", ignore = true)
+    Room roomEntityToRoom(RoomEntity roomEntity);
 
-    @Mapping(target = "roomBookings", qualifiedByName = "roomRoomInRoomBookings")
-    Room toRoom(RoomEntity roomEntity);
+    @Mapping(target = "room", qualifiedByName = "withoutRoomBookingsInRoom")
+    RoomBooking toRoomBooking(RoomBookingEntity roomBookingEntity);
 
-    RoomEntity toRoomEntity(Room room);
+    RoomBookingEntity toRoomBookingEntity(RoomBooking roomBooking);
 }

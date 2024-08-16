@@ -6,9 +6,9 @@ import lombok.*;
 
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "feedback")

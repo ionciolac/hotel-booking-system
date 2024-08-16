@@ -6,7 +6,7 @@ import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.hotel.Cr
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.hotel.UpdateHotelRequest;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.hotel.HotelResponse;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.mapper.HotelRestMapper;
-import com.hotel.booking.system.hotel.service.ports.in.HotelInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

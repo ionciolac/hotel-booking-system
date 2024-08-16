@@ -6,7 +6,7 @@ import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.room.Cre
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.room.UpdateRoomRequest;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.room.RoomResponse;
 import com.hotel.booking.system.hotel.service.adapters.in.rest.mapper.RoomRestMapper;
-import com.hotel.booking.system.hotel.service.ports.in.RoomInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

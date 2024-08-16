@@ -1,9 +1,8 @@
 package com.hotel.booking.system.hotel.service.domain.model;
 
-import com.hotel.booking.system.common.common.Stars;
-import com.hotel.booking.system.common.domain.model.Address;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
@@ -13,14 +12,17 @@ import static java.util.UUID.randomUUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hotel {
+public class RoomBooking {
 
     private UUID id;
-    private String name;
-    private Stars stars;
-    private Address address;
-    private Double minPricePerNight;
-    private Double maxPricePerNight;
+    private Room room;
+    private UUID userId;
+    private UUID bookingId;
+    private LocalDateTime fromDate;
+    private LocalDateTime toDate;
+    private Long nightsNumber;
+    private Double pricePerNight;
+    private Double totalPrice;
     private String currency;
 
     public void generateID() {

@@ -2,17 +2,16 @@ package com.hotel.booking.system.hotel.service.domain.model;
 
 
 import com.hotel.booking.system.common.common.RoomType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
 @Builder
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Room {
@@ -25,6 +24,7 @@ public class Room {
     private Boolean isRoomAvailable;
     private double pricePerNight;
     private String currency;
+    private Set<RoomBooking> roomBookings;
 
     public void generateID() {
         this.id = randomUUID();
