@@ -1,6 +1,5 @@
 package com.hotel.booking.system.hotel.service.domain.service;
 
-import com.hotel.booking.system.common.common.FeedbackMark;
 import com.hotel.booking.system.common.domain.exception.AlreadyExistException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Feedback;
@@ -14,19 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
+import static com.hotel.booking.system.common.domain.utils.AppConstants.FEEDBACK_MARK_VALUES;
 import static java.lang.String.format;
 import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
 @Service
 public class FeedbackService implements FeedbackInPort {
-
-    private static final List<Double> feedbackMarkValues = List.of(FeedbackMark.ONE.mark, FeedbackMark.TWO.mark,
-            FeedbackMark.THREE.mark, FeedbackMark.FOUR.mark, FeedbackMark.FIVE.mark);
 
     private final FeedbackOutPort feedbackOutPort;
     private final HotelOutPort hotelOutPort;
@@ -70,27 +67,23 @@ public class FeedbackService implements FeedbackInPort {
 
     private Hotel getDBHotel(UUID id) {
         Optional<Hotel> hotel = hotelOutPort.getHotel(id);
-        if (hotel.isPresent()) {
+        if (hotel.isPresent())
             return hotel.get();
-        } else {
-            String msg = format("Hotel with id: %s was not found in DB. Feedback can't be added.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, HOTEL, id));
     }
 
     private Feedback getDBFeedback(UUID id) {
         var feedback = feedbackOutPort.getFeedback(id);
-        if (feedback.isPresent()) {
+        if (feedback.isPresent())
             return feedback.get();
-        } else {
-            String msg = format("Feedback with id: %s was not found in DB.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, FEEDBACK, id));
     }
 
     void checkIfUserHasAddFeedbackToHotel(UUID userId, UUID hotelId) {
         if (feedbackOutPort.hasUserAddFeedbackToHotel(userId, hotelId)) {
-            String msg = format("User with id: %s already added feedback to hotel with id %s", userId, hotelId);
+            String msg = format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, hotelId);
             throw new AlreadyExistException(msg);
         }
     }
@@ -99,7 +92,7 @@ public class FeedbackService implements FeedbackInPort {
         if (hasText(source.getUserMessage())) {
             target.setUserMessage(source.getUserMessage());
         }
-        if (feedbackMarkValues.contains(source.getUserMark())) {
+        if (FEEDBACK_MARK_VALUES.contains(source.getUserMark())) {
             target.setUserMark(source.getUserMark());
         }
     }

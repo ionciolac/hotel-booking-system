@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
 import static java.lang.String.format;
 
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class HotelService implements HotelInPort {
 
     private void checkIfHotelExistOnAddress(Hotel hotel) {
         if (hotelOutPort.checkIfHotelExistOnAddress(hotel)) {
-            String msg = format("Hotel with name: %s with entered address already exist in DB.", hotel.getName());
+            String msg = format(SERVICE_HOTEL_ALREADY_EXIST_ON_ADDRESS_MESSAGE, hotel.getName());
             throw new AlreadyExistException(msg);
         }
     }
@@ -61,9 +62,7 @@ public class HotelService implements HotelInPort {
         var hotel = hotelOutPort.getHotel(id);
         if (hotel.isPresent())
             return hotel.get();
-        else {
-            var msg = format("Hotel was not found in DB by id: %s.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, HOTEL, id));
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
 import static java.lang.String.format;
 
 @RequiredArgsConstructor
@@ -53,16 +54,14 @@ public class UserService implements UserInPort {
 
     private User getDBUser(UUID id) {
         Optional<User> user = userOutPort.getUser(id);
-        if (user.isPresent()) {
+        if (user.isPresent())
             return user.get();
-        } else {
-            var msg = format("User was not found in DB by id: %s.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, USER, id));
     }
 
     private void checkIfUserIsUnique(User user) {
         if (userOutPort.checkIFUserExist(user))
-            throw new AlreadyExistException("User with same username, phoneNumber and email already exist in DB.");
+            throw new AlreadyExistException(SERVICE_USER_ALREADY_EXIST_MESSAGE);
     }
 }

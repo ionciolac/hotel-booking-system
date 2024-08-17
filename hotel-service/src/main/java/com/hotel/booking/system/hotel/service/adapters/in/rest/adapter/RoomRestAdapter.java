@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.CONTROLLER_DELETE_MESSAGE_RESPONSE_MESSAGE;
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.ROOM;
 import static java.lang.String.format;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -43,7 +45,7 @@ public class RoomRestAdapter {
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResponse> deleteRoom(@PathVariable("id") UUID id) {
         roomInPort.deleteRoom(id);
-        var msg = format("Room with ID: %s was deleted", id);
+        var msg = format(CONTROLLER_DELETE_MESSAGE_RESPONSE_MESSAGE, ROOM, id);
         return ResponseEntity.status(OK).body(new DeletedResponse(Boolean.TRUE, msg));
     }
 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.CONTROLLER_DELETE_MESSAGE_RESPONSE_MESSAGE;
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.FEEDBACK;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -41,7 +43,7 @@ public class FeedbackRestAdapter {
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResponse> deleteFeedback(@PathVariable("id") UUID id) {
         feedbackInPort.deleteFeedback(id);
-        var msg = format("Feedback with ID: %s was deleted", id);
+        var msg = format(CONTROLLER_DELETE_MESSAGE_RESPONSE_MESSAGE, FEEDBACK, id);
         return ResponseEntity.status(OK).body(new DeletedResponse(Boolean.TRUE, msg));
     }
 

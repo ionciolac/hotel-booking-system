@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
 import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHourAndMinutesToYYYYmmDD;
 import static java.lang.String.format;
 
@@ -67,19 +68,15 @@ public class RoomBookingService implements RoomBookingInPort, BookRoomListener {
     }
 
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {
-        if (fromDate.isEqual(toDate) || fromDate.isAfter(toDate)) {
-            String msg = "toDate param can't be smaller or equal to fromDate param";
-            throw new BadRequestException(msg);
-        }
+        if (fromDate.isEqual(toDate) || fromDate.isAfter(toDate))
+            throw new BadRequestException(SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE);
     }
 
     private Room getDBRoom(UUID id) {
         Optional<Room> room = roomOutPort.getRoom(id);
-        if (room.isPresent()) {
+        if (room.isPresent())
             return room.get();
-        } else {
-            var msg = format("Room was not found in DB by id: %s.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, ROOM, id));
     }
 }

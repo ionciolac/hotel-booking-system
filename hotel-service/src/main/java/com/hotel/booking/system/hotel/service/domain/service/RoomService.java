@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
 import static java.lang.String.format;
 
 @RequiredArgsConstructor
@@ -68,29 +69,25 @@ public class RoomService implements RoomInPort {
 
     void checkIfRoomAlreadyExistInHotel(UUID hotelId, String doorNumber) {
         if (roomOutPort.checkIfRoomAlreadyExistInHotel(hotelId, doorNumber)) {
-            String msg = format("Room with door number: %s already exist in hotel: %s", doorNumber, hotelId);
+            String msg = format(SERVICE_ROOM_ALREADY_EXIST_MESSAGE, doorNumber, hotelId);
             throw new AlreadyExistException(msg);
         }
     }
 
     private Hotel getDBHotel(UUID id) {
         Optional<Hotel> hotel = hotelOutPort.getHotel(id);
-        if (hotel.isPresent()) {
+        if (hotel.isPresent())
             return hotel.get();
-        } else {
-            String msg = format("Hotel with id: %s was not found in DB. Room can't be added.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, HOTEL, id));
     }
 
     private Room getDBRoom(UUID id) {
         Optional<Room> room = roomOutPort.getRoom(id);
-        if (room.isPresent()) {
+        if (room.isPresent())
             return room.get();
-        } else {
-            var msg = format("Room was not found in DB by id: %s.", id);
-            throw new NotFoundException(msg);
-        }
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, ROOM, id));
     }
 
     private void patch(Room target, Room source) {
