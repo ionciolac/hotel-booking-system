@@ -1,12 +1,14 @@
 package com.hotel.booking.system.hotel.service.adapters.in.rest.data.req.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Setter
 @Getter
