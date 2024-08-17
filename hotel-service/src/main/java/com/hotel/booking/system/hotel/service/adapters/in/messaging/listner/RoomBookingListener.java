@@ -27,11 +27,11 @@ public class RoomBookingListener {
     void execute() {
         log.info("start cron");
         var roomBookingRequest = RoomBookingRequest.builder()
-                .roomId(fromString("1efb108c-7c43-4057-b229-9da8d9652ce2"))
-                .userId(fromString("1efb108c-7c43-4057-b229-9da8d9652ce3"))
+                .roomId(fromString("812d6453-0052-45df-83c4-e3a523302ce3"))
+                .userId(fromString("1d48ce6b-82fd-4748-8185-3b2e5988dd51"))
                 .bookingId(fromString("1efb108c-7c43-4057-b229-9da8d9652ce4"))
-                .fromDate(LocalDateTime.of(2024, 9, 20, 0, 0))
-                .toDate(LocalDateTime.of(2024, 9, 21, 0, 0))
+                .fromDate(LocalDateTime.of(2024, 9, 1, 0, 0))
+                .toDate(LocalDateTime.of(2024, 9, 2, 0, 0))
                 .build();
         var roomBooking = roomBookingMessagingMapper.toRoomBooking(roomBookingRequest);
         bookRoomListener.bookRoom(roomBooking);

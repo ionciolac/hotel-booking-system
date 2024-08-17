@@ -4,11 +4,12 @@ import com.hotel.booking.system.common.common.RoomType;
 import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 import java.util.UUID;
 
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor

@@ -2,21 +2,22 @@ package com.hotel.booking.system.hotel.service.domain.model;
 
 
 import com.hotel.booking.system.common.common.RoomType;
-import lombok.*;
+import com.hotel.booking.system.common.domain.model.BaseId;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
-import java.util.UUID;
 
-import static java.util.UUID.randomUUID;
-
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Room {
+public class Room extends BaseId {
 
-    private UUID id;
     private Hotel hotel;
     private RoomType roomType;
     private int floor;
@@ -25,8 +26,4 @@ public class Room {
     private double pricePerNight;
     private String currency;
     private Set<RoomBooking> roomBookings;
-
-    public void generateID() {
-        this.id = randomUUID();
-    }
 }

@@ -1,20 +1,22 @@
 package com.hotel.booking.system.hotel.service.domain.model;
 
-import lombok.*;
+import com.hotel.booking.system.common.domain.model.BaseId;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static java.util.UUID.randomUUID;
-
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomBooking {
+public class RoomBooking extends BaseId {
 
-    private UUID id;
     private Room room;
     private UUID userId;
     private UUID bookingId;
@@ -24,8 +26,4 @@ public class RoomBooking {
     private Double pricePerNight;
     private Double totalPrice;
     private String currency;
-
-    public void generateID() {
-        this.id = randomUUID();
-    }
 }

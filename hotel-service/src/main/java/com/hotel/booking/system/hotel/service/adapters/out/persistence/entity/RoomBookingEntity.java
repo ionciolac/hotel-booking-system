@@ -2,12 +2,16 @@ package com.hotel.booking.system.hotel.service.adapters.out.persistence.entity;
 
 import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor

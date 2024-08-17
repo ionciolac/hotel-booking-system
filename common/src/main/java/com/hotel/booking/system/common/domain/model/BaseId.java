@@ -6,17 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
+
 @SuperBuilder
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address extends BaseId {
+public abstract class BaseId {
 
-    private String country;
-    private String region;
-    private String city;
-    private String postalCode;
-    private String street;
-    private String buildingNumber;
+    private UUID id;
+
+    public void generateID() {
+        this.id = randomUUID();
+    }
 }
