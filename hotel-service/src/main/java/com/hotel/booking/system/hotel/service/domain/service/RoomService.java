@@ -5,8 +5,8 @@ import com.hotel.booking.system.common.domain.exception.AlreadyExistException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
+import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
-import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
 import com.hotel.booking.system.hotel.service.ports.out.RoomOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,15 @@ import static java.lang.String.format;
 public class RoomService implements RoomInPort {
 
     private final RoomOutPort roomOutPort;
-    private final HotelOutPort hotelOutPort;
+    // services
+    private final HotelInPort hotelInPort;
 
     @Transactional
     @Override
     public Room cretaeRoom(Room room) {
         var hotelId = room.getHotel().getId();
         checkIfRoomAlreadyExistInHotel(hotelId, room.getDoorNumber());
-        Hotel hotel = getDBHotel(hotelId);
+        Hotel hotel = hotelInPort.getHotel(hotelId);
         room.setHotel(hotel);
         room.setCurrency(hotel.getCurrency());
         room.generateID();
@@ -63,23 +64,13 @@ public class RoomService implements RoomInPort {
     @Transactional
     @Override
     public Page<Room> getRooms(UUID hotelId, Integer floor, RoomType roomType, Pageable pageable) {
-        Hotel hotel = getDBHotel(hotelId);
+        Hotel hotel = hotelInPort.getHotel(hotelId);
         return roomOutPort.getRooms(hotel, floor, roomType, pageable);
     }
 
     void checkIfRoomAlreadyExistInHotel(UUID hotelId, String doorNumber) {
-        if (roomOutPort.checkIfRoomAlreadyExistInHotel(hotelId, doorNumber)) {
-            String msg = format(SERVICE_ROOM_ALREADY_EXIST_MESSAGE, doorNumber, hotelId);
-            throw new AlreadyExistException(msg);
-        }
-    }
-
-    private Hotel getDBHotel(UUID id) {
-        Optional<Hotel> hotel = hotelOutPort.getHotel(id);
-        if (hotel.isPresent())
-            return hotel.get();
-        else
-            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, HOTEL, id));
+        if (roomOutPort.checkIfRoomAlreadyExistInHotel(hotelId, doorNumber))
+            throw new AlreadyExistException(format(SERVICE_ROOM_ALREADY_EXIST_MESSAGE, doorNumber, hotelId));
     }
 
     private Room getDBRoom(UUID id) {

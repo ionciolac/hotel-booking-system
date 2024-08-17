@@ -1,32 +1,29 @@
 package com.hotel.booking.system.hotel.service.domain.service;
 
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
-import com.hotel.booking.system.common.domain.exception.NotFoundException;
-import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookRoomListener;
-import com.hotel.booking.system.hotel.service.ports.in.rest.RoomBookingInPort;
-import com.hotel.booking.system.hotel.service.ports.out.RoomBookingOutPort;
-import com.hotel.booking.system.hotel.service.ports.out.RoomOutPort;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingListenerPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.BookingInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
+import com.hotel.booking.system.hotel.service.ports.out.BookingOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 import java.util.UUID;
 
-import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE;
 import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHourAndMinutesToYYYYmmDD;
-import static java.lang.String.format;
 
 @RequiredArgsConstructor
 @Service
-public class RoomBookingService implements RoomBookingInPort, BookRoomListener {
+public class BookingService implements BookingInPort, BookingListenerPort {
 
-    private final RoomBookingOutPort roomBookingOutPort;
-    private final RoomOutPort roomOutPort;
+    private final BookingOutPort roomBookingOutPort;
+    //services
+    private final RoomInPort roomInPort;
 
     @Override
     public boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
@@ -38,7 +35,7 @@ public class RoomBookingService implements RoomBookingInPort, BookRoomListener {
     @Override
     public void bookRoom(RoomBooking roomBooking) {
         var roomId = roomBooking.getRoom().getId();
-        var dbRoom = getDBRoom(roomId);
+        var dbRoom = roomInPort.getRoom(roomId);
         var checkinHour = dbRoom.getHotel().getCheckinHour();
         var checkoutHour = dbRoom.getHotel().getCheckinHour();
         var fromDate = roomBooking.getFromDate();
@@ -70,13 +67,5 @@ public class RoomBookingService implements RoomBookingInPort, BookRoomListener {
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {
         if (fromDate.isEqual(toDate) || fromDate.isAfter(toDate))
             throw new BadRequestException(SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE);
-    }
-
-    private Room getDBRoom(UUID id) {
-        Optional<Room> room = roomOutPort.getRoom(id);
-        if (room.isPresent())
-            return room.get();
-        else
-            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, ROOM, id));
     }
 }

@@ -52,10 +52,8 @@ public class HotelService implements HotelInPort {
     }
 
     private void checkIfHotelExistOnAddress(Hotel hotel) {
-        if (hotelOutPort.checkIfHotelExistOnAddress(hotel)) {
-            String msg = format(SERVICE_HOTEL_ALREADY_EXIST_ON_ADDRESS_MESSAGE, hotel.getName());
-            throw new AlreadyExistException(msg);
-        }
+        if (hotelOutPort.checkIfHotelExistOnAddress(hotel))
+            throw new AlreadyExistException(format(SERVICE_HOTEL_ALREADY_EXIST_ON_ADDRESS_MESSAGE, hotel.getName()));
     }
 
     private Hotel getDBHotel(UUID id) {

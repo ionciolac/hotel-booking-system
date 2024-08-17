@@ -1,7 +1,7 @@
 package com.hotel.booking.system.hotel.service.adapters.in.rest.adapter;
 
 import com.hotel.booking.system.hotel.service.adapters.in.rest.data.res.roombooking.IsRoomBookedResponse;
-import com.hotel.booking.system.hotel.service.ports.in.rest.RoomBookingInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.BookingInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,17 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RequestMapping("/room-booking")
+@RequestMapping("/booking")
 @RestController
-public class RoomBookingRestAdapter {
+public class BookingRestAdapter {
 
-    private final RoomBookingInPort roomBookingInPort;
+    private final BookingInPort bookingInPort;
 
-    @GetMapping
+    @GetMapping("is-room-available")
     public ResponseEntity<IsRoomBookedResponse> checkIfRoomIsBooked(@RequestParam UUID id,
                                                                     @RequestParam LocalDateTime fromDate,
                                                                     @RequestParam LocalDateTime toDate) {
-        var isBooked = roomBookingInPort.checkIfRoomIsBooked(id, fromDate, toDate);
+        var isBooked = bookingInPort.checkIfRoomIsBooked(id, fromDate, toDate);
         var result = IsRoomBookedResponse.builder().id(id).roomIsBooked(isBooked).build();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

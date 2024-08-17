@@ -1,9 +1,9 @@
 package com.hotel.booking.system.hotel.service.adapters.out.persistence.adapter;
 
-import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.RoomBookingPersistenceMapper;
+import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.BookingPersistenceMapper;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.repository.RoomBookingRepository;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.out.RoomBookingOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.BookingOutPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +14,16 @@ import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHour
 
 @RequiredArgsConstructor
 @Service
-public class RoomBookingPersistenceAdapter implements RoomBookingOutPort {
+public class BookingPersistenceAdapter implements BookingOutPort {
 
     private final RoomBookingRepository roomBookingRepository;
-    private final RoomBookingPersistenceMapper roomBookingPersistenceMapper;
+    private final BookingPersistenceMapper bookingPersistenceMapper;
 
     @Override
     public RoomBooking insertRoomBooking(RoomBooking roomBooking) {
         var roomBookingEntity = roomBookingRepository
-                .save(roomBookingPersistenceMapper.toRoomBookingEntity(roomBooking));
-        return roomBookingPersistenceMapper.toRoomBooking(roomBookingEntity);
+                .save(bookingPersistenceMapper.toRoomBookingEntity(roomBooking));
+        return bookingPersistenceMapper.toRoomBooking(roomBookingEntity);
     }
 
     @Override
