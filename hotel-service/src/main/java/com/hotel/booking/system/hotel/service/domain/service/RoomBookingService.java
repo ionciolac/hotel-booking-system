@@ -37,18 +37,22 @@ public class RoomBookingService implements RoomBookingInPort, BookRoomListener {
     @Override
     public void bookRoom(RoomBooking roomBooking) {
         var roomId = roomBooking.getRoom().getId();
+        var dbRoom = getDBRoom(roomId);
+        var checkinHour = dbRoom.getHotel().getCheckinHour();
+        var checkoutHour = dbRoom.getHotel().getCheckinHour();
         var fromDate = roomBooking.getFromDate();
         var toDate = roomBooking.getToDate();
         validateReservationDates(fromDate, toDate);
-        if (isRoomBooked(roomId, fromDate, toDate)) {
+        var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0);
+        var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0);
+        if (isRoomBooked(roomId, searchFromDate, searchToDate)) {
             System.out.println("room is already booked");
         } else {
-            var dbRoom = getDBRoom(roomId);
             var nights = ChronoUnit.DAYS.between(fromDate, toDate);
             var pricePerNight = dbRoom.getPricePerNight();
             roomBooking.setRoom(dbRoom);
-            roomBooking.setFromDate(addHourAndMinutesToYYYYmmDD(fromDate, 14, 0));
-            roomBooking.setToDate(addHourAndMinutesToYYYYmmDD(toDate, 10, 0));
+            roomBooking.setFromDate(addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0));
+            roomBooking.setToDate(addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0));
             roomBooking.setPricePerNight(pricePerNight);
             roomBooking.setNightsNumber(nights);
             roomBooking.setTotalPrice(nights * pricePerNight);

@@ -22,6 +22,8 @@ public class Hotel {
     private Double minPricePerNight;
     private Double maxPricePerNight;
     private String currency;
+    private int checkinHour;
+    private int checkoutHour;
 
     public void generateID() {
         this.id = randomUUID();

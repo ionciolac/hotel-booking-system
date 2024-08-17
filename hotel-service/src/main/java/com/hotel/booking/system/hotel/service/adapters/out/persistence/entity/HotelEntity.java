@@ -27,4 +27,6 @@ public class HotelEntity extends EntityAuditing {
     private Double minPricePerNight;
     private Double maxPricePerNight;
     private String currency;
+    private int checkinHour;
+    private int checkoutHour;
 }

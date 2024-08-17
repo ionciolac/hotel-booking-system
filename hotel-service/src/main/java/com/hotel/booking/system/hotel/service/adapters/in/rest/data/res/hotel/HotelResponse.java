@@ -23,4 +23,8 @@ public class HotelResponse {
     @JsonProperty("max_price_per_night")
     private Double maxPricePerNight;
     private String currency;
+    @JsonProperty("checkin_hour")
+    private int checkinHour;
+    @JsonProperty("checkout_hour")
+    private int checkoutHour;
 }
