@@ -23,7 +23,7 @@ public class RoomBookingEntity extends EntityAuditing {
     @Id
     private UUID id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "rooms_id", referencedColumnName = "id")
     private RoomEntity room;
     private UUID userId;
     private UUID bookingId;

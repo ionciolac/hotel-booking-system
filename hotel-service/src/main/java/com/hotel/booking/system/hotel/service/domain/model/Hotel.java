@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Set;
+
 @SuperBuilder
 @Setter
 @Getter
@@ -24,4 +26,6 @@ public class Hotel extends BaseId {
     private String currency;
     private int checkinHour;
     private int checkoutHour;
+
+    private Set<Room> rooms;
 }

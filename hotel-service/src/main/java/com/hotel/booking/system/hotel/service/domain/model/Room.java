@@ -25,5 +25,6 @@ public class Room extends BaseId {
     private Boolean isRoomAvailable;
     private double pricePerNight;
     private String currency;
+
     private Set<RoomBooking> roomBookings;
 }

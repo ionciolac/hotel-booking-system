@@ -13,7 +13,7 @@ public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity, 
 
     @Query(nativeQuery = true, value = """ 
             SELECT rbe1_0.id FROM room_bookings rbe1_0
-            WHERE rbe1_0.room_id = :roomId
+            WHERE rbe1_0.rooms_id = :roomId
               AND rbe1_0.from_date <= to_timestamp(:toDate, 'YYYY-MM-DDThh24:MI')
               AND rbe1_0.to_date >= to_timestamp(:fromDate, 'YYYY-MM-DDThh24:MI') FETCH FIRST 1 ROWS ONLY
               """)

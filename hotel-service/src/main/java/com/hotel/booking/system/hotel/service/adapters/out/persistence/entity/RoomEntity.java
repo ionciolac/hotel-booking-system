@@ -3,7 +3,10 @@ package com.hotel.booking.system.hotel.service.adapters.out.persistence.entity;
 import com.hotel.booking.system.common.common.RoomType;
 import com.hotel.booking.system.common.persistence.EntityAuditing;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
@@ -20,9 +23,8 @@ public class RoomEntity extends EntityAuditing {
 
     @Id
     private UUID id;
-    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotels_id", referencedColumnName = "id")
     private HotelEntity hotel;
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
@@ -31,6 +33,7 @@ public class RoomEntity extends EntityAuditing {
     private Boolean isRoomAvailable;
     private double pricePerNight;
     private String currency;
+
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<RoomBookingEntity> roomBookings;
 }

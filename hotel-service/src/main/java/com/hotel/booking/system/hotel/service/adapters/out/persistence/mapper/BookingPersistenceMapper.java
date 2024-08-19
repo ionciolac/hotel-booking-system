@@ -13,6 +13,7 @@ public interface BookingPersistenceMapper {
 
     @Named("withoutRoomBookingsInRoom")
     @Mapping(target = "roomBookings", ignore = true)
+    @Mapping(target = "hotel", ignore = true)
     Room roomEntityToRoom(RoomEntity roomEntity);
 
     @Mapping(target = "room", qualifiedByName = "withoutRoomBookingsInRoom")

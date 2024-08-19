@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Set;
 import java.util.UUID;
 
 @SuperBuilder
@@ -33,4 +34,7 @@ public class HotelEntity extends EntityAuditing {
     private String currency;
     private int checkinHour;
     private int checkoutHour;
+
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+    private Set<RoomEntity> rooms;
 }

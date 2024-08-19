@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "hotel_addresses")
+@Table(name = "hotel_address")
 @Entity
 public class HotelAddressEntity extends AddressEntity {
 
