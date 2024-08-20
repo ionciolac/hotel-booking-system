@@ -4,7 +4,7 @@ import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingListenerPort;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListenerPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
 import com.hotel.booking.system.hotel.service.ports.out.BookingRoomOutPort;
@@ -25,7 +25,7 @@ import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHour
 
 @RequiredArgsConstructor
 @Service
-public class BookingRoomService implements BookingRoomInPort, BookingListenerPort {
+public class BookingRoomService implements BookingRoomInPort, BookingRoomListenerPort {
 
     private final BookingRoomOutPort roomBookingRoomOutPort;
     //services
