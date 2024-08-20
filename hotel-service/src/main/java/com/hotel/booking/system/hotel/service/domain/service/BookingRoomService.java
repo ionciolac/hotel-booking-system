@@ -2,6 +2,7 @@ package com.hotel.booking.system.hotel.service.domain.service;
 
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
+import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
 import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingListenerPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
@@ -18,6 +19,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE;
+import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKIN_HOUR;
+import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKOUT_HOUR;
 import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHourAndMinutesToYYYYmmDD;
 
 @RequiredArgsConstructor
@@ -31,7 +34,9 @@ public class BookingRoomService implements BookingRoomInPort, BookingListenerPor
     @Override
     public boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
         validateReservationDates(fromDate, toDate);
-        return isRoomBooked(roomId, fromDate, toDate);
+        var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, SYSTEM_CHECKIN_HOUR, 0);
+        var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, SYSTEM_CHECKOUT_HOUR, 0);
+        return isRoomBooked(roomId, searchFromDate, searchToDate);
     }
 
     @Override
@@ -54,8 +59,8 @@ public class BookingRoomService implements BookingRoomInPort, BookingListenerPor
     public void bookRoom(RoomBooking roomBooking) {
         var roomId = roomBooking.getRoom().getId();
         var dbRoom = roomInPort.getRoom(roomId);
-        var checkinHour = dbRoom.getHotel().getCheckinHour();
-        var checkoutHour = dbRoom.getHotel().getCheckinHour();
+        var checkinHour = getCheckinHour(dbRoom);
+        var checkoutHour = getCheckoutHour(dbRoom);
         var fromDate = roomBooking.getFromDate();
         var toDate = roomBooking.getToDate();
         validateReservationDates(fromDate, toDate);
@@ -85,5 +90,15 @@ public class BookingRoomService implements BookingRoomInPort, BookingListenerPor
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {
         if (fromDate.isEqual(toDate) || fromDate.isAfter(toDate))
             throw new BadRequestException(SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE);
+    }
+
+    private int getCheckinHour(Room room) {
+        var checkinHour = room.getHotel().getCheckinHour();
+        return checkinHour == 0 ? SYSTEM_CHECKIN_HOUR : checkinHour;
+    }
+
+    private int getCheckoutHour(Room room) {
+        var checkoutHour = room.getHotel().getCheckoutHour();
+        return checkoutHour == 0 ? SYSTEM_CHECKOUT_HOUR : checkoutHour;
     }
 }
