@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomBookingRequest {
+public class BookRoomRequest {
 
     private UUID roomId;
     private UUID userId;
