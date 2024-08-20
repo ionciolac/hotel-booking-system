@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface BookingMessagingMapper {
+public interface BookingRoomMessagingMapper {
 
     @Mapping(target = "totalPrice", ignore = true)
     @Mapping(target = "pricePerNight", ignore = true)

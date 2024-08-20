@@ -2,7 +2,7 @@ package com.hotel.booking.system.hotel.service.adapters.in.messaging.listner;
 
 
 import com.hotel.booking.system.common.messaging.RoomBookingRequest;
-import com.hotel.booking.system.hotel.service.adapters.in.messaging.mapper.BookingMessagingMapper;
+import com.hotel.booking.system.hotel.service.adapters.in.messaging.mapper.BookingRoomMessagingMapper;
 import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListenerPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import static java.util.UUID.fromString;
 public class BookingRoomListener {
 
     private final BookingRoomListenerPort bookingRoomListenerPort;
-    private final BookingMessagingMapper bookingMessagingMapper;
+    private final BookingRoomMessagingMapper bookingRoomMessagingMapper;
 
     //TODO temporary method to book room's will be replaced with kafka linter
 //    @Scheduled(cron = "*/10 * * * * *")
@@ -33,7 +33,7 @@ public class BookingRoomListener {
                 .fromDate(LocalDateTime.of(2024, 9, 7, 0, 0))
                 .toDate(LocalDateTime.of(2024, 9, 13, 0, 0))
                 .build();
-        var roomBooking = bookingMessagingMapper.toRoomBooking(roomBookingRequest);
+        var roomBooking = bookingRoomMessagingMapper.toRoomBooking(roomBookingRequest);
         bookingRoomListenerPort.bookRoom(roomBooking);
         log.info("stop cron");
     }
