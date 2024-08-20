@@ -1,13 +1,16 @@
 package com.hotel.booking.system.hotel.service.domain.service;
 
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
+import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
 import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingListenerPort;
-import com.hotel.booking.system.hotel.service.ports.in.rest.BookingInPort;
+import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
-import com.hotel.booking.system.hotel.service.ports.out.BookingOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.BookingRoomOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,9 +22,9 @@ import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHour
 
 @RequiredArgsConstructor
 @Service
-public class BookingService implements BookingInPort, BookingListenerPort {
+public class BookingRoomService implements BookingRoomInPort, BookingListenerPort {
 
-    private final BookingOutPort roomBookingOutPort;
+    private final BookingRoomOutPort roomBookingRoomOutPort;
     //services
     private final RoomInPort roomInPort;
 
@@ -29,6 +32,21 @@ public class BookingService implements BookingInPort, BookingListenerPort {
     public boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
         validateReservationDates(fromDate, toDate);
         return isRoomBooked(roomId, fromDate, toDate);
+    }
+
+    @Override
+    public Page<AvailableRoom> getAvailableRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
+                                                 Double minPricePerNight, Double maxPricePerNight, Pageable pageable) {
+        return roomInPort.getRooms(country, city, fromDate, toDate, minPricePerNight, maxPricePerNight, pageable)
+                .map(room -> AvailableRoom.builder()
+                        .hotelId(room.getHotel().getId())
+                        .hotelName(room.getHotel().getName())
+                        .roomId(room.getId())
+                        .pricePerNight(room.getPricePerNight())
+                        .currency(room.getCurrency())
+                        .country(room.getHotel().getAddress().getCountry())
+                        .city(room.getHotel().getAddress().getCity())
+                        .build());
     }
 
     @Transactional
@@ -56,12 +74,12 @@ public class BookingService implements BookingInPort, BookingListenerPort {
             roomBooking.setTotalPrice(nights * pricePerNight);
             roomBooking.setCurrency(dbRoom.getCurrency());
             roomBooking.generateID();
-            roomBookingOutPort.insertRoomBooking(roomBooking);
+            roomBookingRoomOutPort.insertRoomBooking(roomBooking);
         }
     }
 
     private boolean isRoomBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
-        return roomBookingOutPort.checkIfRoomIsBooked(roomId, fromDate, toDate);
+        return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, fromDate, toDate);
     }
 
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {

@@ -5,6 +5,7 @@ import com.hotel.booking.system.hotel.service.adapters.out.persistence.entity.Ho
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.entity.RoomEntity;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.HotelPersistenceMapper;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.RoomPersistenceMapper;
+import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.RoomWithHotelPersistenceMapper;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.repository.RoomRepository;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,8 +26,11 @@ import static com.hotel.booking.system.hotel.service.adapters.out.persistence.sp
 @Service
 public class RoomPersistenceAdapter implements RoomOutPort {
 
+    // repository
     private final RoomRepository roomRepository;
+    // mappers
     private final RoomPersistenceMapper roomPersistenceMapper;
+    private final RoomWithHotelPersistenceMapper roomWithHotelPersistenceMapper;
     private final HotelPersistenceMapper hotelPersistenceMapper;
 
     @Override
@@ -57,5 +62,19 @@ public class RoomPersistenceAdapter implements RoomOutPort {
                 .and(floor == null ? null : floorFilter(floor))
                 .and(roomType == null ? null : roomTypeFilter(roomType));
         return roomRepository.findAll(specification, pageable).map(roomPersistenceMapper::toRoom);
+    }
+
+    @Override
+    public Page<Room> getRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
+                               Double minPricePerNight, Double maxPricePerNight, Pageable pageable) {
+        Specification<RoomEntity> specification = Specification
+                .where(filterByIsRoomAvailable(Boolean.TRUE))
+                .and(country == null ? null : filterByCountry(country))
+                .and(city == null ? null : filterByCity(city))
+                .and(fromDate == null ? null : filterByFromDate(fromDate))
+                .and(toDate == null ? null : filterByToDate(toDate))
+                .and(minPricePerNight == null ? null : filterByMinPricePerNight(minPricePerNight))
+                .and(maxPricePerNight == null ? null : filterByMaxPricePerNight(maxPricePerNight));
+        return roomRepository.findAll(specification, pageable).map(roomWithHotelPersistenceMapper::toRoom);
     }
 }

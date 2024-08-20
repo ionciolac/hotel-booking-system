@@ -5,6 +5,7 @@ import com.hotel.booking.system.hotel.service.domain.model.Room;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface RoomInPort {
@@ -18,4 +19,7 @@ public interface RoomInPort {
     Room getRoom(UUID id);
 
     Page<Room> getRooms(UUID hotelId, Integer floor, RoomType roomType, Pageable pageable);
+
+    Page<Room> getRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
+                        Double minPricePerNight, Double maxPricePerNight, Pageable pageable);
 }

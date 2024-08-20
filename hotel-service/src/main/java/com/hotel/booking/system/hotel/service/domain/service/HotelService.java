@@ -5,6 +5,7 @@ import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
 import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class HotelService implements HotelInPort {
         return hotelOutPort.upsertHotel(hotel);
     }
 
+    @Transactional
     @Override
     public Hotel updateHotel(Hotel hotel) {
         var id = hotel.getId();
@@ -40,12 +42,14 @@ public class HotelService implements HotelInPort {
         return hotelOutPort.upsertHotel(hotel);
     }
 
+    @Transactional
     @Override
     public void deleteHotel(UUID id) {
         getDBHotel(id);
         hotelOutPort.deleteHotel(id);
     }
 
+    @Transactional
     @Override
     public Hotel getHotel(UUID id) {
         return getDBHotel(id);

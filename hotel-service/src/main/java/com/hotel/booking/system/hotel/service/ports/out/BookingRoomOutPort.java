@@ -5,7 +5,7 @@ import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public interface BookingOutPort {
+public interface BookingRoomOutPort {
 
     RoomBooking insertRoomBooking(RoomBooking roomBooking);
 

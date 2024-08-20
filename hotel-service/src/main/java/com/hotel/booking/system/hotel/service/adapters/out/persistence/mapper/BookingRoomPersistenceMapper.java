@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
-public interface BookingPersistenceMapper {
+public interface BookingRoomPersistenceMapper {
 
     @Named("withoutRoomBookingsInRoom")
     @Mapping(target = "roomBookings", ignore = true)

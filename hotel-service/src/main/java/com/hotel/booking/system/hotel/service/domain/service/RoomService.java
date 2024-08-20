@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -66,6 +67,12 @@ public class RoomService implements RoomInPort {
     public Page<Room> getRooms(UUID hotelId, Integer floor, RoomType roomType, Pageable pageable) {
         Hotel hotel = hotelInPort.getHotel(hotelId);
         return roomOutPort.getRooms(hotel, floor, roomType, pageable);
+    }
+
+    @Override
+    public Page<Room> getRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
+                               Double minPricePerNight, Double maxPricePerNight, Pageable pageable) {
+        return roomOutPort.getRooms(country, city, fromDate, toDate, minPricePerNight, maxPricePerNight, pageable);
     }
 
     void checkIfRoomAlreadyExistInHotel(UUID hotelId, String doorNumber) {
