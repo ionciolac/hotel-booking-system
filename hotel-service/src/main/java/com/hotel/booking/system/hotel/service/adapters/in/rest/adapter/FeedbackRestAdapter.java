@@ -9,7 +9,6 @@ import com.hotel.booking.system.hotel.service.ports.in.rest.FeedbackInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +17,7 @@ import java.util.UUID;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.CONTROLLER_DELETE_MESSAGE_RESPONSE_MESSAGE;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.FEEDBACK;
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
@@ -31,13 +31,13 @@ public class FeedbackRestAdapter {
     @PostMapping
     public ResponseEntity<FeedbackResponse> createFeedback(@RequestBody CreateFeedbackRequest req) {
         var feedback = feedbackInPort.createFeedback(feedbackRestMapper.toFeedback(req));
-        return ResponseEntity.status(HttpStatus.CREATED).body(feedbackRestMapper.toFeedbackResponse(feedback));
+        return ResponseEntity.status(CREATED).body(feedbackRestMapper.toFeedbackResponse(feedback));
     }
 
     @PatchMapping
     public ResponseEntity<FeedbackResponse> updateFeedback(@RequestBody UpdateFeedbackRequest req) {
         var feedback = feedbackInPort.updateFeedback(feedbackRestMapper.toFeedback(req));
-        return ResponseEntity.status(HttpStatus.OK).body(feedbackRestMapper.toFeedbackResponse(feedback));
+        return ResponseEntity.status(OK).body(feedbackRestMapper.toFeedbackResponse(feedback));
     }
 
     @DeleteMapping("/{id}")
@@ -50,7 +50,7 @@ public class FeedbackRestAdapter {
     @GetMapping("/{id}")
     public ResponseEntity<FeedbackResponse> getFeedback(@PathVariable("id") UUID id) {
         var feedback = feedbackInPort.getFeedback(id);
-        return ResponseEntity.status(HttpStatus.OK).body(feedbackRestMapper.toFeedbackResponse(feedback));
+        return ResponseEntity.status(OK).body(feedbackRestMapper.toFeedbackResponse(feedback));
     }
 
     @GetMapping
@@ -60,6 +60,6 @@ public class FeedbackRestAdapter {
         var pageable = PageRequest.of(page, size);
         var result = feedbackInPort.getHotelFeedback(hotelId, pageable)
                 .map(feedbackRestMapper::toFeedbackResponse);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(OK).body(result);
     }
 }

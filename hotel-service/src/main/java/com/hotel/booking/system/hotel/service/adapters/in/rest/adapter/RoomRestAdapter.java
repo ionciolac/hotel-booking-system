@@ -9,7 +9,6 @@ import com.hotel.booking.system.hotel.service.adapters.in.rest.mapper.RoomRestMa
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,6 +61,6 @@ public class RoomRestAdapter {
                                                       @RequestParam(value = "floor", required = false) Integer floor,
                                                       @RequestParam(value = "room_type", required = false) RoomType roomType) {
         var result = roomInPort.getRooms(hotelId, floor, roomType, of(page, size)).map(roomRestMapper::toRoomResponse);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(OK).body(result);
     }
 }
