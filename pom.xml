@@ -21,6 +21,7 @@
         <module>common</module>
         <module>hotel-service</module>
         <module>user-service</module>
+        <module>booking-service</module>
     </modules>
 
     <properties>
@@ -32,6 +33,7 @@
         <common.module.version>0.0.1-SNAPSHOT</common.module.version>
         <hotel.service.version>0.0.1-SNAPSHOT</hotel.service.version>
         <user.service.version>0.0.1-SNAPSHOT</user.service.version>
+        <booking.service.version>0.0.1-SNAPSHOT</booking.service.version>
     </properties>
 
     <dependencies>
