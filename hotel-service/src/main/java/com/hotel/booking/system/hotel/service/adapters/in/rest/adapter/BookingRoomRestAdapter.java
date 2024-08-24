@@ -26,7 +26,7 @@ public class BookingRoomRestAdapter {
     private final BookingRoomInPort bookingRoomInPort;
     private final BookingRoomRestMapper bookingRoomRestMapper;
 
-    @GetMapping("is-room-available")
+    @GetMapping("/is-room-available")
     public ResponseEntity<IsRoomBookedResponse> checkIfRoomIsBooked(@RequestParam UUID id,
                                                                     @RequestParam("from_date") LocalDateTime fromDate,
                                                                     @RequestParam("to_date") LocalDateTime toDate) {

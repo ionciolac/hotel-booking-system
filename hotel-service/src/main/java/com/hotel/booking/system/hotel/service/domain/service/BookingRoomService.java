@@ -84,6 +84,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingRoomListene
     }
 
     private boolean isRoomBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
+        roomInPort.getRoom(roomId);
         return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, fromDate, toDate);
     }
 
