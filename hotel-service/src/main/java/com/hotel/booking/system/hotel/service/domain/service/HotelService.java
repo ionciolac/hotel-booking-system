@@ -4,7 +4,7 @@ import com.hotel.booking.system.common.domain.exception.AlreadyExistException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
-import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.HotelOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.hotel.booking.system.hotel.service.adapters.in.messaging.mapper;
+package com.hotel.booking.system.hotel.service.adapters.in.messaging.kafka.mapper;
 
 import com.hotel.booking.system.common.messaging.BookRoomRequest;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;

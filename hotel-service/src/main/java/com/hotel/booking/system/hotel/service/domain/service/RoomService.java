@@ -7,7 +7,7 @@ import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
-import com.hotel.booking.system.hotel.service.ports.out.RoomOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.RoomOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

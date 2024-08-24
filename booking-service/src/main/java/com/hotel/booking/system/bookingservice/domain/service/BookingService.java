@@ -2,8 +2,8 @@ package com.hotel.booking.system.bookingservice.domain.service;
 
 import com.hotel.booking.system.bookingservice.domain.client.HotelServiceClient;
 import com.hotel.booking.system.bookingservice.domain.model.Booking;
-import com.hotel.booking.system.bookingservice.ports.in.BookingInPort;
-import com.hotel.booking.system.bookingservice.ports.out.BookingOutPort;
+import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
+import com.hotel.booking.system.bookingservice.ports.out.persistence.BookingOutPort;
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;

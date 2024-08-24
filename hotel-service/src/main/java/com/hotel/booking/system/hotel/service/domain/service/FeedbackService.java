@@ -6,7 +6,7 @@ import com.hotel.booking.system.hotel.service.domain.model.Feedback;
 import com.hotel.booking.system.hotel.service.domain.wrapper.FeedbackWrapper;
 import com.hotel.booking.system.hotel.service.ports.in.rest.FeedbackInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.HotelInPort;
-import com.hotel.booking.system.hotel.service.ports.out.FeedbackOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.FeedbackOutPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

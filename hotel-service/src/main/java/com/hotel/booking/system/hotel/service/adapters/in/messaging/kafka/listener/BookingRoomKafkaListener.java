@@ -1,9 +1,9 @@
-package com.hotel.booking.system.hotel.service.adapters.in.messaging.listner;
+package com.hotel.booking.system.hotel.service.adapters.in.messaging.kafka.listener;
 
 
 import com.hotel.booking.system.common.messaging.BookRoomRequest;
-import com.hotel.booking.system.hotel.service.adapters.in.messaging.mapper.BookingRoomMessagingMapper;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListenerPort;
+import com.hotel.booking.system.hotel.service.adapters.in.messaging.kafka.mapper.BookingRoomMessagingMapper;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,9 +17,9 @@ import static java.util.UUID.fromString;
 @RequiredArgsConstructor
 @EnableScheduling
 @Component
-public class BookingRoomListener {
+public class BookingRoomKafkaListener {
 
-    private final BookingRoomListenerPort bookingRoomListenerPort;
+    private final BookingRoomListener bookingRoomListener;
     private final BookingRoomMessagingMapper bookingRoomMessagingMapper;
 
     //TODO temporary method to book room's will be replaced with kafka linter
@@ -34,7 +34,7 @@ public class BookingRoomListener {
                 .toDate(LocalDateTime.of(2024, 10, 10, 0, 0))
                 .build();
         var roomBooking = bookingRoomMessagingMapper.toRoomBooking(roomBookingRequest);
-        bookingRoomListenerPort.bookRoom(roomBooking);
+        bookingRoomListener.bookRoom(roomBooking);
         log.info("stop cron");
     }
 }

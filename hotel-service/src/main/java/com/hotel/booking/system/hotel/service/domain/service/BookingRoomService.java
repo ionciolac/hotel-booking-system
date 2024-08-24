@@ -4,10 +4,10 @@ import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListenerPort;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListener;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
-import com.hotel.booking.system.hotel.service.ports.out.BookingRoomOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.BookingRoomOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHour
 
 @RequiredArgsConstructor
 @Service
-public class BookingRoomService implements BookingRoomInPort, BookingRoomListenerPort {
+public class BookingRoomService implements BookingRoomInPort, BookingRoomListener {
 
     private final BookingRoomOutPort roomBookingRoomOutPort;
     //services

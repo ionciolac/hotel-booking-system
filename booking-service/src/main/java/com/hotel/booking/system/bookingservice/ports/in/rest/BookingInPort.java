@@ -1,4 +1,4 @@
-package com.hotel.booking.system.bookingservice.ports.in;
+package com.hotel.booking.system.bookingservice.ports.in.rest;
 
 import com.hotel.booking.system.bookingservice.domain.model.Booking;
 

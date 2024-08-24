@@ -1,4 +1,4 @@
-package com.hotel.booking.system.hotel.service.ports.out;
+package com.hotel.booking.system.hotel.service.ports.out.persistence;
 
 import com.hotel.booking.system.common.common.RoomType;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;

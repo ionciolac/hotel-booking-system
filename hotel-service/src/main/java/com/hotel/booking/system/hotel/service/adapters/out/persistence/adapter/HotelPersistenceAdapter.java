@@ -3,7 +3,7 @@ package com.hotel.booking.system.hotel.service.adapters.out.persistence.adapter;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.HotelPersistenceMapper;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.repository.HotelRepository;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
-import com.hotel.booking.system.hotel.service.ports.out.HotelOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.HotelOutPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

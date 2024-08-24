@@ -4,7 +4,7 @@ import com.hotel.booking.system.bookingservice.adapters.in.rest.data.req.CreateB
 import com.hotel.booking.system.bookingservice.adapters.in.rest.data.req.UpdateBookingRequest;
 import com.hotel.booking.system.bookingservice.adapters.in.rest.data.res.BookingResponse;
 import com.hotel.booking.system.bookingservice.adapters.in.rest.mapper.BookingRestMapper;
-import com.hotel.booking.system.bookingservice.ports.in.BookingInPort;
+import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.common.rest.data.res.DeletedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

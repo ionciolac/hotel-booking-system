@@ -9,7 +9,7 @@ import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.Ro
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.repository.RoomRepository;
 import com.hotel.booking.system.hotel.service.domain.model.Hotel;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
-import com.hotel.booking.system.hotel.service.ports.out.RoomOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.RoomOutPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

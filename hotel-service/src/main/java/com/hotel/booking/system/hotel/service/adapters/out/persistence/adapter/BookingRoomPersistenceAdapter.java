@@ -4,7 +4,7 @@ import com.hotel.booking.system.hotel.service.adapters.out.persistence.entity.Ro
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.mapper.BookingRoomPersistenceMapper;
 import com.hotel.booking.system.hotel.service.adapters.out.persistence.repository.RoomBookingRepository;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.out.BookingRoomOutPort;
+import com.hotel.booking.system.hotel.service.ports.out.persistence.BookingRoomOutPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
