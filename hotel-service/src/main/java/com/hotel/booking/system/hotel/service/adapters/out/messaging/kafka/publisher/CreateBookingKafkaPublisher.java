@@ -29,8 +29,10 @@ public class CreateBookingKafkaPublisher implements CreateBookingPublisher {
     private BookingRoomMessage getBookRoomRequest(RoomBooking roomBooking, BookingStatus status) {
         BookingRoomMessage result = null;
         switch (status) {
-            case ROOM_RESERVED -> result = bookingPublisherMapper.toBookingRoomMessageROOM_RESERVED(roomBooking);
-            case ROOM_BOOKED -> result = bookingPublisherMapper.toBookingRoomMessageROOM_BOOKED(roomBooking);
+            case ROOM_IS_ALREADY_BOOKED -> result = bookingPublisherMapper
+                    .toBookingRoomMessageROOM_IS_ALREADY_BOOKED(roomBooking);
+            case ROOM_BOOKED -> result = bookingPublisherMapper
+                    .toBookingRoomMessageROOM_BOOKED(roomBooking);
         }
         return result;
     }

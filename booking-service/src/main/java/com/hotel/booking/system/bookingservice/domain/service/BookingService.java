@@ -6,7 +6,6 @@ import com.hotel.booking.system.bookingservice.ports.in.messaging.BookingRoomRes
 import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.bookingservice.ports.out.messaging.CreateBookingRoomPublisher;
 import com.hotel.booking.system.bookingservice.ports.out.persistence.BookingOutPort;
-import com.hotel.booking.system.common.common.BookingStatus;
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
@@ -57,7 +56,7 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
     @Override
     public void deleteBooking(UUID id) {
         Booking booking = getBookingFromDB(id);
-        if (asList(RESERVED, ROOM_RESERVED, BOOKED_CANCELED).contains(booking.getStatus()))
+        if (asList(RESERVED, ROOM_IS_ALREADY_BOOKED, BOOKED_CANCELED).contains(booking.getStatus()))
             bookingOutPort.deleteBooking(id);
         else
             throw new BadRequestException(format(SERVICE_BOOKING_IS_BOOKED_AND_CANNOT_BE_REMOVED_MESSAGE));
@@ -80,13 +79,16 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
         return booking;
     }
 
+    // TODO if status is ROOM_BOOKED then change status to WAITING_PAYMENT and init payment
     @Transactional
     @Override
-    public void notifyRoomBookingStatus(UUID id, BookingStatus bookingStatus, UUID roomBookingId) {
-        Booking booking = getBookingFromDB(id);
-        booking.setStatus(bookingStatus);
-        booking.setRoomBookingId(roomBookingId);
-        bookingOutPort.upsertBooking(booking);
+    public void roomBooked(Booking booking) {
+        Booking dbBooking = getBookingFromDB(booking.getId());
+        dbBooking.setStatus(booking.getStatus());
+        dbBooking.setRoomBookingId(booking.getRoomBookingId());
+        dbBooking.setFromDate(booking.getFromDate());
+        dbBooking.setToDate(booking.getToDate());
+        bookingOutPort.upsertBooking(dbBooking);
     }
 
     private void validateIfBookingExist(Booking booking) {
@@ -113,7 +115,7 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
         var fromDate = booking.getFromDate();
         var toDate = booking.getToDate();
         if (isRoomBookedInHotelService(roomID, fromDate, toDate)) {
-            booking.setStatus(ROOM_RESERVED);
+            booking.setStatus(ROOM_IS_ALREADY_BOOKED);
         }
     }
 

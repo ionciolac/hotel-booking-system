@@ -9,13 +9,15 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BookingPublisherMapper {
 
+    @Mapping(target = "hotelId", ignore = true)
     @Mapping(target = "roomBookingId", source = "id")
     @Mapping(target = "status", constant = "ROOM_BOOKED")
     @Mapping(target = "roomId", source = "room.id")
     BookingRoomMessage toBookingRoomMessageROOM_BOOKED(RoomBooking roomBooking);
 
+    @Mapping(target = "hotelId", ignore = true)
     @Mapping(target = "roomBookingId", source = "id")
-    @Mapping(target = "status", constant = "ROOM_RESERVED")
+    @Mapping(target = "status", constant = "ROOM_IS_ALREADY_BOOKED")
     @Mapping(target = "roomId", source = "room.id")
-    BookingRoomMessage toBookingRoomMessageROOM_RESERVED(RoomBooking roomBooking);
+    BookingRoomMessage toBookingRoomMessageROOM_IS_ALREADY_BOOKED(RoomBooking roomBooking);
 }

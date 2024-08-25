@@ -1,10 +1,8 @@
 package com.hotel.booking.system.bookingservice.ports.in.messaging;
 
-import com.hotel.booking.system.common.common.BookingStatus;
-
-import java.util.UUID;
+import com.hotel.booking.system.bookingservice.domain.model.Booking;
 
 public interface BookingRoomResponseListener {
 
-    void notifyRoomBookingStatus(UUID id, BookingStatus bookingStatus, UUID roomBookingId);
+    void roomBooked(Booking booking);
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record BookingRoomMessage(UUID roomId, UUID userId, UUID bookingId, UUID roomBookingId, LocalDateTime fromDate,
-                                 LocalDateTime toDate, BookingStatus status) {
+public record BookingRoomMessage(UUID roomId, UUID userId, UUID bookingId, UUID roomBookingId, UUID hotelId,
+                                 LocalDateTime fromDate, LocalDateTime toDate, BookingStatus status) {
 
 }

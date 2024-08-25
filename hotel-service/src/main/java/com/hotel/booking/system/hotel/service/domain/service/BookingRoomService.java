@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.BookingStatus.ROOM_BOOKED;
-import static com.hotel.booking.system.common.common.BookingStatus.ROOM_RESERVED;
+import static com.hotel.booking.system.common.common.BookingStatus.ROOM_IS_ALREADY_BOOKED;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKIN_HOUR;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKOUT_HOUR;
@@ -72,7 +72,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingResponseLis
         var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0);
         var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0);
         if (isRoomBooked(roomId, searchFromDate, searchToDate)) {
-            createBookingPublisher.publisher(roomBooking, ROOM_RESERVED);
+            createBookingPublisher.publisher(roomBooking, ROOM_IS_ALREADY_BOOKED);
         } else {
             var nights = ChronoUnit.DAYS.between(fromDate, toDate);
             var pricePerNight = dbRoom.getPricePerNight();
