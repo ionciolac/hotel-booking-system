@@ -2,7 +2,7 @@ package com.hotel.booking.system.hotel.service.adapters.out.messaging.kafka.mapp
 
 
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.kafka.model.BookingRoomMessage;
+import com.hotel.booking.system.kafka.model.CreateBookingMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,11 +13,11 @@ public interface BookingPublisherMapper {
     @Mapping(target = "roomBookingId", source = "id")
     @Mapping(target = "status", constant = "ROOM_BOOKED")
     @Mapping(target = "roomId", source = "room.id")
-    BookingRoomMessage toBookingRoomMessageROOM_BOOKED(RoomBooking roomBooking);
+    CreateBookingMessage toCreateBookingMessageROOM_BOOKED(RoomBooking roomBooking);
 
     @Mapping(target = "hotelId", ignore = true)
     @Mapping(target = "roomBookingId", source = "id")
     @Mapping(target = "status", constant = "ROOM_IS_ALREADY_BOOKED")
     @Mapping(target = "roomId", source = "room.id")
-    BookingRoomMessage toBookingRoomMessageROOM_IS_ALREADY_BOOKED(RoomBooking roomBooking);
+    CreateBookingMessage toCreateBookingMessageROOM_IS_ALREADY_BOOKED(RoomBooking roomBooking);
 }

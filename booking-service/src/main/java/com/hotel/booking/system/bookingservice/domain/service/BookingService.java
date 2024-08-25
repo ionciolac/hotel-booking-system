@@ -2,7 +2,7 @@ package com.hotel.booking.system.bookingservice.domain.service;
 
 import com.hotel.booking.system.bookingservice.domain.client.HotelServiceClient;
 import com.hotel.booking.system.bookingservice.domain.model.Booking;
-import com.hotel.booking.system.bookingservice.ports.in.messaging.BookingRoomResponseListener;
+import com.hotel.booking.system.bookingservice.ports.in.messaging.CreatedBookingRoomListener;
 import com.hotel.booking.system.bookingservice.ports.in.messaging.RemovedBookingRoomListener;
 import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.bookingservice.ports.out.messaging.CreateBookingRoomPublisher;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
 @Service
-public class BookingService implements BookingInPort, BookingRoomResponseListener, RemovedBookingRoomListener {
+public class BookingService implements BookingInPort, CreatedBookingRoomListener, RemovedBookingRoomListener {
 
     // out ports
     private final BookingOutPort bookingOutPort;
@@ -102,7 +102,7 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
     // TODO if status is ROOM_BOOKED then change status to WAITING_PAYMENT and init payment
     @Transactional
     @Override
-    public void roomBooked(Booking booking) {
+    public void bookingCreated(Booking booking) {
         Booking dbBooking = getBookingFromDB(booking.getId());
         dbBooking.setStatus(booking.getStatus());
         dbBooking.setRoomBookingId(booking.getRoomBookingId());

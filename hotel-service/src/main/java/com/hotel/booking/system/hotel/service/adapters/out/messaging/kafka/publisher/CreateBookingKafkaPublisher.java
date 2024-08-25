@@ -5,7 +5,7 @@ import com.hotel.booking.system.hotel.service.adapters.out.messaging.kafka.mappe
 import com.hotel.booking.system.hotel.service.config.HotelServiceConfigData;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
 import com.hotel.booking.system.hotel.service.ports.out.messaging.CreateBookingPublisher;
-import com.hotel.booking.system.kafka.model.BookingRoomMessage;
+import com.hotel.booking.system.kafka.model.CreateBookingMessage;
 import com.hotel.booking.system.kafka.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateBookingKafkaPublisher implements CreateBookingPublisher {
 
-    private final KafkaProducer<String, BookingRoomMessage> kafkaProducer;
+    private final KafkaProducer<String, CreateBookingMessage> kafkaProducer;
     private final BookingPublisherMapper bookingPublisherMapper;
     private final HotelServiceConfigData hotelServiceConfigData;
 
@@ -26,13 +26,13 @@ public class CreateBookingKafkaPublisher implements CreateBookingPublisher {
         kafkaProducer.send(topicName, roomBooking.getBookingId().toString(), bookRoomRequest);
     }
 
-    private BookingRoomMessage getBookRoomRequest(RoomBooking roomBooking, BookingStatus status) {
-        BookingRoomMessage result = null;
+    private CreateBookingMessage getBookRoomRequest(RoomBooking roomBooking, BookingStatus status) {
+        CreateBookingMessage result = null;
         switch (status) {
             case ROOM_IS_ALREADY_BOOKED -> result = bookingPublisherMapper
-                    .toBookingRoomMessageROOM_IS_ALREADY_BOOKED(roomBooking);
+                    .toCreateBookingMessageROOM_IS_ALREADY_BOOKED(roomBooking);
             case ROOM_BOOKED -> result = bookingPublisherMapper
-                    .toBookingRoomMessageROOM_BOOKED(roomBooking);
+                    .toCreateBookingMessageROOM_BOOKED(roomBooking);
         }
         return result;
     }

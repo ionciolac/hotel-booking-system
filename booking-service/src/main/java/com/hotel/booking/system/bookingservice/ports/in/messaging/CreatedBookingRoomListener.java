@@ -2,7 +2,7 @@ package com.hotel.booking.system.bookingservice.ports.in.messaging;
 
 import com.hotel.booking.system.bookingservice.domain.model.Booking;
 
-public interface BookingRoomResponseListener {
+public interface CreatedBookingRoomListener {
 
-    void roomBooked(Booking booking);
+    void bookingCreated(Booking booking);
 }

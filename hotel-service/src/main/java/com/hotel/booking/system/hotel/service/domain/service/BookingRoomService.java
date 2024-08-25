@@ -5,7 +5,7 @@ import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingResponseListener;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.CreateBookingListener;
 import com.hotel.booking.system.hotel.service.ports.in.messaging.RemoveBookingListener;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
@@ -35,7 +35,7 @@ import static java.lang.String.format;
 
 @RequiredArgsConstructor
 @Service
-public class BookingRoomService implements BookingRoomInPort, BookingResponseListener, RemoveBookingListener {
+public class BookingRoomService implements BookingRoomInPort, CreateBookingListener, RemoveBookingListener {
 
     // out ports
     private final BookingRoomOutPort roomBookingRoomOutPort;
@@ -69,7 +69,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingResponseLis
 
     @Transactional
     @Override
-    public void bookRoom(RoomBooking roomBooking) {
+    public void createBooking(RoomBooking roomBooking) {
         var roomId = roomBooking.getRoom().getId();
         var dbRoom = roomInPort.getRoom(roomId);
         var checkinHour = getCheckinHour(dbRoom);
