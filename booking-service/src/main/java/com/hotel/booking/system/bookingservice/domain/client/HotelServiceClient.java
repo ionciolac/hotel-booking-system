@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@FeignClient(url = "http://localhost:8081", name = "hotel-service")
+@FeignClient(url = "http://localhost:8084", name = "hotel-service")
 public interface HotelServiceClient {
 
     @GetMapping("/is-room-available")

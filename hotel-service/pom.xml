@@ -43,6 +43,21 @@
             <artifactId>common</artifactId>
             <version>${common.module.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.hotel.booking.system</groupId>
+            <artifactId>kafka-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hotel.booking.system</groupId>
+            <artifactId>kafka-producer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hotel.booking.system</groupId>
+            <artifactId>kafka-consumer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

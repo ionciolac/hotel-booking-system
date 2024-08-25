@@ -51,4 +51,10 @@ public class BookingRestAdapter {
         var booking = bookingInPort.getBooking(id);
         return ResponseEntity.status(OK).body(bookingRestMapper.toBookingResponse(booking));
     }
+
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<BookingResponse> payBooking(@PathVariable("id") UUID id) {
+        var booking = bookingInPort.payBooking(id);
+        return ResponseEntity.status(OK).body(bookingRestMapper.toBookingResponse(booking));
+    }
 }

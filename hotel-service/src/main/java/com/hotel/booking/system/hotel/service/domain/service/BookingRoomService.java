@@ -4,9 +4,10 @@ import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
-import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingRoomListener;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingResponseListener;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
+import com.hotel.booking.system.hotel.service.ports.out.messaging.CreateBookingPublisher;
 import com.hotel.booking.system.hotel.service.ports.out.persistence.BookingRoomOutPort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import static com.hotel.booking.system.common.common.BookingStatus.ROOM_BOOKED;
+import static com.hotel.booking.system.common.common.BookingStatus.ROOM_RESERVED;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKIN_HOUR;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKOUT_HOUR;
@@ -25,9 +28,11 @@ import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHour
 
 @RequiredArgsConstructor
 @Service
-public class BookingRoomService implements BookingRoomInPort, BookingRoomListener {
+public class BookingRoomService implements BookingRoomInPort, BookingResponseListener {
 
+    // out ports
     private final BookingRoomOutPort roomBookingRoomOutPort;
+    private final CreateBookingPublisher createBookingPublisher;
     //services
     private final RoomInPort roomInPort;
 
@@ -67,7 +72,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingRoomListene
         var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0);
         var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0);
         if (isRoomBooked(roomId, searchFromDate, searchToDate)) {
-            System.out.println("room is already booked");
+            createBookingPublisher.publisher(roomBooking, ROOM_RESERVED);
         } else {
             var nights = ChronoUnit.DAYS.between(fromDate, toDate);
             var pricePerNight = dbRoom.getPricePerNight();
@@ -79,7 +84,8 @@ public class BookingRoomService implements BookingRoomInPort, BookingRoomListene
             roomBooking.setTotalPrice(nights * pricePerNight);
             roomBooking.setCurrency(dbRoom.getCurrency());
             roomBooking.generateID();
-            roomBookingRoomOutPort.insertRoomBooking(roomBooking);
+            roomBooking = roomBookingRoomOutPort.insertRoomBooking(roomBooking);
+            createBookingPublisher.publisher(roomBooking, ROOM_BOOKED);
         }
     }
 

@@ -13,4 +13,6 @@ public interface BookingInPort {
     void deleteBooking(UUID id);
 
     Booking getBooking(UUID id);
+
+    Booking payBooking(UUID id);
 }

@@ -21,4 +21,5 @@ public class AppCommonMessages {
     public static final String SERVICE_ROOM_ALREADY_IS_BOOKED_FROM_TO_DATE_MESSAGE = "Room with id: %s already is booked from date: %s to date %s.";
     public static final String SERVICE_BOOKING_IS_BOOKED_AND_CANNOT_BE_REMOVED_MESSAGE = "Booking is in booked and can't be removed. First cancel booking.";
     public static final String SERVICE_BOOKING_IS_ALREADY_EXIST_MESSAGE = "Booking room id: %s by user id: %s from date: %s to date: %s already exist.";
+    public static final String SERVICE_BOOKING_MUST_BE_IN_RESERVED_STATUS_MESSAGE = "Booking %s must be in status %s to init payment";
 }

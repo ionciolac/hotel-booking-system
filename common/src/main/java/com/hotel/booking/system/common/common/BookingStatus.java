@@ -1,12 +1,17 @@
 package com.hotel.booking.system.common.common;
 
+import lombok.Getter;
+
+@Getter
 public enum BookingStatus {
 
     RESERVED, //when user create a booking in booking system
-    WAITING_PAYMENT, //when user init payment to book a room
-    PAYMENT_REFUSED, //when payment service response that something is wrong and payment service refused to payment
-    PAYED, //when payment service response that everything is good with payment and booking system can book room in hotel service
-    BOOKED_REFUSED, //when hotel service refused to book room because it already was booked. init process to refund money
+    BOOKING_ROOM, //when user init payment
+    ROOM_RESERVED, //when user init process of payment and room is already booked from date to date - from this status booking cannot be changed to another only to delete
+    ROOM_BOOKED, //when room was reserved hotel service change status to this status and init process of payment
+    WAITING_PAYMENT, //when room was booked in hotel service and booking service init payment
+    PAYMENT_REFUSED, //when payment service response that something is wrong and payment service refused to payment then remove room booking in hotel service
+    PAYED, //when payment service response that everything is good with payment then booking system can change status to BOOKED
     BOOKED, //when hotel service booked room and notify booking system that room was booked
     BOOKED_CANCELED //when user canceled booking with 1 day before check_in
 }
