@@ -13,4 +13,6 @@ public class BookingServiceConfigData {
 
     private String bookRoomTopicName;
     private String roomBookedTopicName;
+    private String hotelServiceAddress;
+    private String hotelServicePort;
 }

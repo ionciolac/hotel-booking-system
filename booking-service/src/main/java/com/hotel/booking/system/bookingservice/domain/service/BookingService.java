@@ -74,6 +74,7 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
         Booking booking = getBookingFromDB(id);
         validateIfRoomIsNotInRESERVEDStatus(booking);
         validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(booking);
+        booking.setStatus(BOOKING_ROOM);
         booking = bookingOutPort.upsertBooking(booking);
         createBookingRoomPublisher.publish(booking);
         return booking;

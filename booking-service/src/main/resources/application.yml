@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8033
 spring:
   application:
     name: booking-service
@@ -27,6 +27,8 @@ spring:
 booking-service:
   book-room-topic-name: book-room-topic
   room-booked-topic-name: room-booked-topic
+  hotel-service-address: localhost
+  hotel-service-port: 8031
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092
