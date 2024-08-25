@@ -13,5 +13,6 @@ public enum BookingStatus {
     PAYMENT_REFUSED, //when payment service response that something is wrong and payment service refused to payment then remove room booking in hotel service
     PAYED, //when payment service response that everything is good with payment then booking system can change status to BOOKED
     BOOKED, //when hotel service booked room and notify booking system that room was booked
+    INIT_CANCEL_BOOKING, //when user init to cancel booking
     BOOKED_CANCELED //when user canceled booking with 1 day before check_in
 }

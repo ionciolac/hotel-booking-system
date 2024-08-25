@@ -27,6 +27,8 @@ spring:
 hotel-service:
   book-room-topic-name: book-room-topic
   room-booked-topic-name: room-booked-topic
+  remove-booking-topic-name: remove-booking-topic
+  removed-booking-topic-name: removed-booking-topic
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092

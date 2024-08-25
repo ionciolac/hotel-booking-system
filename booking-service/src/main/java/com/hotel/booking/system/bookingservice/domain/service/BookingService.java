@@ -3,11 +3,14 @@ package com.hotel.booking.system.bookingservice.domain.service;
 import com.hotel.booking.system.bookingservice.domain.client.HotelServiceClient;
 import com.hotel.booking.system.bookingservice.domain.model.Booking;
 import com.hotel.booking.system.bookingservice.ports.in.messaging.BookingRoomResponseListener;
+import com.hotel.booking.system.bookingservice.ports.in.messaging.RemovedBookingRoomListener;
 import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.bookingservice.ports.out.messaging.CreateBookingRoomPublisher;
+import com.hotel.booking.system.bookingservice.ports.out.messaging.RemoveBookingRoomPublisher;
 import com.hotel.booking.system.bookingservice.ports.out.persistence.BookingOutPort;
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
+import com.hotel.booking.system.kafka.model.RemoveBookingMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,17 +21,20 @@ import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.BookingStatus.*;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
+import static com.hotel.booking.system.kafka.model.BookingRemoveStatus.BOOKING_REMOVED;
+import static com.hotel.booking.system.kafka.model.BookingRemoveStatus.REMOVE_BOOKING;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
 @Service
-public class BookingService implements BookingInPort, BookingRoomResponseListener {
+public class BookingService implements BookingInPort, BookingRoomResponseListener, RemovedBookingRoomListener {
 
     // out ports
     private final BookingOutPort bookingOutPort;
     private final CreateBookingRoomPublisher createBookingRoomPublisher;
+    private final RemoveBookingRoomPublisher removeBookingRoomPublisher;
     // external services
     private final HotelServiceClient hotelServiceClient;
 
@@ -36,7 +42,8 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
     @Override
     public Booking createBooking(Booking booking) {
         validateIfBookingExist(booking);
-        validateIfRoomIsBookedThenThrowException(booking);
+        var result = isRoomBookedInHotelService(booking);
+        booking.validateIfRoomIsBookedThenThrowException(result, booking);
         booking.setStatus(RESERVED);
         booking.generateID();
         return bookingOutPort.upsertBooking(booking);
@@ -71,11 +78,24 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
     @Override
     public Booking payBooking(UUID id) {
         Booking booking = getBookingFromDB(id);
-        validateIfRoomIsNotInRESERVEDStatus(booking);
-        validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(booking);
+        booking.validateIfRoomIsNotInRESERVEDStatus(booking);
+        var result = isRoomBookedInHotelService(booking);
+        booking.validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(result, booking);
         booking.setStatus(BOOKING_ROOM);
         booking = bookingOutPort.upsertBooking(booking);
         createBookingRoomPublisher.publish(booking);
+        return booking;
+    }
+
+    @Override
+    public Booking cancelBooking(UUID id) {
+        Booking booking = getBookingFromDB(id);
+        booking.validateIfCanCancelBooking(booking);
+        booking.setStatus(INIT_CANCEL_BOOKING);
+        booking = bookingOutPort.upsertBooking(booking);
+        //TODO: make payment refund
+        var removeBookingMessage = toRemoveBookingMessage(booking);
+        removeBookingRoomPublisher.publish(removeBookingMessage);
         return booking;
     }
 
@@ -91,6 +111,15 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
         bookingOutPort.upsertBooking(dbBooking);
     }
 
+    @Override
+    public void bookingRemoved(RemoveBookingMessage removeBookingMessage) {
+        Booking booking = getBookingFromDB(removeBookingMessage.bookingId());
+        if (removeBookingMessage.removeStatus().equals(BOOKING_REMOVED)) {
+            booking.setStatus(BOOKED_CANCELED);
+            bookingOutPort.upsertBooking(booking);
+        }
+    }
+
     private void validateIfBookingExist(Booking booking) {
         var userId = booking.getUserId();
         var roomId = booking.getRoomId();
@@ -101,27 +130,17 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
 
     }
 
-    private void validateIfRoomIsBookedThenThrowException(Booking booking) {
+    private boolean isRoomBookedInHotelService(Booking booking) {
         var roomID = booking.getRoomId();
         var fromDate = booking.getFromDate();
         var toDate = booking.getToDate();
-        if (isRoomBookedInHotelService(roomID, fromDate, toDate)) {
-            throw new BadRequestException(format(SERVICE_ROOM_ALREADY_IS_BOOKED_FROM_TO_DATE_MESSAGE, roomID, fromDate, toDate));
-        }
+        return isRoomBookedInHotelService(roomID, fromDate, toDate);
     }
 
-    private void validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(Booking booking) {
-        var roomID = booking.getRoomId();
-        var fromDate = booking.getFromDate();
-        var toDate = booking.getToDate();
-        if (isRoomBookedInHotelService(roomID, fromDate, toDate)) {
-            booking.setStatus(ROOM_IS_ALREADY_BOOKED);
-        }
-    }
 
     private boolean isRoomBookedInHotelService(UUID roomID, LocalDateTime fromDate, LocalDateTime toDate) {
-        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, fromDate, toDate)
-                .getBody()).isRoomIsBooked();
+        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, fromDate, toDate).getBody())
+                .isRoomIsBooked();
     }
 
     private Booking getBookingFromDB(UUID id) {
@@ -141,10 +160,12 @@ public class BookingService implements BookingInPort, BookingRoomResponseListene
         }
     }
 
-    private void validateIfRoomIsNotInRESERVEDStatus(Booking booking) {
-        if (!RESERVED.equals(booking.getStatus())) {
-            var msg = format(SERVICE_BOOKING_MUST_BE_IN_RESERVED_STATUS_MESSAGE, booking.getId(), RESERVED);
-            throw new BadRequestException(msg);
-        }
+    private RemoveBookingMessage toRemoveBookingMessage(Booking booking) {
+        return RemoveBookingMessage.builder()
+                .bookingId(booking.getId())
+                .roomBookingId(booking.getRoomBookingId())
+                .roomId(booking.getRoomId())
+                .removeStatus(REMOVE_BOOKING)
+                .build();
     }
 }

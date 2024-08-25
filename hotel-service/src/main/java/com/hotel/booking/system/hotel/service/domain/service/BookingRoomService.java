@@ -1,14 +1,18 @@
 package com.hotel.booking.system.hotel.service.domain.service;
 
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
+import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.hotel.service.domain.model.AvailableRoom;
 import com.hotel.booking.system.hotel.service.domain.model.Room;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
 import com.hotel.booking.system.hotel.service.ports.in.messaging.BookingResponseListener;
+import com.hotel.booking.system.hotel.service.ports.in.messaging.RemoveBookingListener;
 import com.hotel.booking.system.hotel.service.ports.in.rest.BookingRoomInPort;
 import com.hotel.booking.system.hotel.service.ports.in.rest.RoomInPort;
 import com.hotel.booking.system.hotel.service.ports.out.messaging.CreateBookingPublisher;
+import com.hotel.booking.system.hotel.service.ports.out.messaging.RemovedBookingPublisher;
 import com.hotel.booking.system.hotel.service.ports.out.persistence.BookingRoomOutPort;
+import com.hotel.booking.system.kafka.model.RemoveBookingMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,22 +21,26 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.BookingStatus.ROOM_BOOKED;
 import static com.hotel.booking.system.common.common.BookingStatus.ROOM_IS_ALREADY_BOOKED;
-import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE;
+import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKIN_HOUR;
 import static com.hotel.booking.system.common.domain.utils.AppConstants.SYSTEM_CHECKOUT_HOUR;
 import static com.hotel.booking.system.common.domain.utils.DateTimeUtils.addHourAndMinutesToYYYYmmDD;
+import static com.hotel.booking.system.kafka.model.BookingRemoveStatus.BOOKING_REMOVED;
+import static java.lang.String.format;
 
 @RequiredArgsConstructor
 @Service
-public class BookingRoomService implements BookingRoomInPort, BookingResponseListener {
+public class BookingRoomService implements BookingRoomInPort, BookingResponseListener, RemoveBookingListener {
 
     // out ports
     private final BookingRoomOutPort roomBookingRoomOutPort;
     private final CreateBookingPublisher createBookingPublisher;
+    private final RemovedBookingPublisher removedBookingPublisher;
     //services
     private final RoomInPort roomInPort;
 
@@ -89,6 +97,23 @@ public class BookingRoomService implements BookingRoomInPort, BookingResponseLis
         }
     }
 
+    @Override
+    public void removeBooking(RemoveBookingMessage removeBookingMessage) {
+        var id = removeBookingMessage.roomBookingId();
+        RoomBooking roomBooking = getDBRoomBooking(id);
+        var removedBookingMessage = toRemoveBookingMessage(roomBooking);
+        roomBookingRoomOutPort.removeRoomBooking(id);
+        removedBookingPublisher.publisher(removedBookingMessage);
+    }
+
+    private RoomBooking getDBRoomBooking(UUID id) {
+        Optional<RoomBooking> roomBooking = roomBookingRoomOutPort.getRoomBooking(id);
+        if (roomBooking.isPresent())
+            return roomBooking.get();
+        else
+            throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, BOOKING, id));
+    }
+
     private boolean isRoomBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
         roomInPort.getRoom(roomId);
         return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, fromDate, toDate);
@@ -107,5 +132,14 @@ public class BookingRoomService implements BookingRoomInPort, BookingResponseLis
     private int getCheckoutHour(Room room) {
         var checkoutHour = room.getHotel().getCheckoutHour();
         return checkoutHour == 0 ? SYSTEM_CHECKOUT_HOUR : checkoutHour;
+    }
+
+    private RemoveBookingMessage toRemoveBookingMessage(RoomBooking roomBooking) {
+        return RemoveBookingMessage.builder()
+                .bookingId(roomBooking.getBookingId())
+                .roomBookingId(roomBooking.getId())
+                .roomId(roomBooking.getRoom().getId())
+                .removeStatus(BOOKING_REMOVED)
+                .build();
     }
 }

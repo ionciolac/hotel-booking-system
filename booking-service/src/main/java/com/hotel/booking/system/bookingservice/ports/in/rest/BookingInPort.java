@@ -15,4 +15,6 @@ public interface BookingInPort {
     Booking getBooking(UUID id);
 
     Booking payBooking(UUID id);
+
+    Booking cancelBooking(UUID id);
 }

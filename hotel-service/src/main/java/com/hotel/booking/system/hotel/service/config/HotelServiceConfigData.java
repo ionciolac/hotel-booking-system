@@ -13,4 +13,6 @@ public class HotelServiceConfigData {
 
     private String bookRoomTopicName;
     private String roomBookedTopicName;
+    private String removeBookingTopicName;
+    private String removedBookingTopicName;
 }

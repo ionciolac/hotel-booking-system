@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.hotel.service.adapters.out.persistence.specification.RoomBookingEntitySpecification.fromDateToDateFilter;
@@ -35,5 +36,16 @@ public class BookingRoomPersistenceAdapter implements BookingRoomOutPort {
                 .where(roomIdFilter(roomId))
                 .and(fromDateToDateFilter(fromDate, toDate));
         return roomBookingRepository.findOne(specification).isPresent();
+    }
+
+    @Override
+    public Optional<RoomBooking> getRoomBooking(UUID id) {
+        return roomBookingRepository.findById(id)
+                .map(bookingRoomPersistenceMapper::toRoomBooking);
+    }
+
+    @Override
+    public void removeRoomBooking(UUID id) {
+        roomBookingRepository.deleteById(id);
     }
 }
