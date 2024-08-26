@@ -35,7 +35,7 @@ public class BookingRoomPersistenceAdapter implements BookingRoomOutPort {
         Specification<RoomBookingEntity> specification = Specification
                 .where(roomIdFilter(roomId))
                 .and(fromDateToDateFilter(fromDate, toDate));
-        return roomBookingRepository.findOne(specification).isPresent();
+        return !roomBookingRepository.findAll(specification).isEmpty();
     }
 
     @Override
