@@ -27,8 +27,10 @@ spring:
 booking-service:
   hotel-service-address: localhost
   hotel-service-port: 8031
-  book-room-topic-name: book-room-topic
-  room-booked-topic-name: room-booked-topic
+  create-booking-topic-name: create-booking-topic
+  created-booking-topic-name: created-booking-topic
+  #  update-booking-topic-name: update-booking-topic
+  #  updated-booking-topic-name: updated-booking-topic
   remove-booking-topic-name: remove-booking-topic
   removed-booking-topic-name: removed-booking-topic
 
