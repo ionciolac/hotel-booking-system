@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>kafka</artifactId>
-    <version>${kafka.nodule.version}</version>
+    <version>${kafka.module.version}</version>
 
     <packaging>pom</packaging>
     <modules>

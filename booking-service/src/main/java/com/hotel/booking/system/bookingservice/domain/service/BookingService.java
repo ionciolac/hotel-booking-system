@@ -7,7 +7,6 @@ import com.hotel.booking.system.bookingservice.ports.in.messaging.BookingRoomLis
 import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.bookingservice.ports.out.messaging.BookingRoomPublisher;
 import com.hotel.booking.system.bookingservice.ports.out.persistence.BookingOutPort;
-import com.hotel.booking.system.common.common.BookingStatus;
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.kafka.model.BookingMessage;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.BookingStatus.*;
@@ -59,8 +57,8 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         booking.setUserId(dbBooking.getUserId());
         var isRoomBooked = isRoomBookedInHotelService(booking);
         dbBooking.validateIfRoomIsBookedThenThrowException(isRoomBooked, booking);
-        BookingStatus status = dbBooking.getStatus();
-        switch (status) {
+        var bookingStatus = dbBooking.getStatus();
+        switch (bookingStatus) {
             case RESERVED -> {
                 patch(dbBooking, booking);
                 dbBooking = bookingOutPort.upsertBooking(dbBooking);
@@ -80,7 +78,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Transactional
     @Override
     public void deleteBooking(UUID id) {
-        Booking booking = getBookingFromDB(id);
+        var booking = getBookingFromDB(id);
         if (asList(RESERVED, ROOM_IS_ALREADY_BOOKED, BOOKED_CANCELED).contains(booking.getStatus()))
             bookingOutPort.deleteBooking(id);
         else
@@ -95,7 +93,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Transactional
     @Override
     public Booking payBooking(UUID id) {
-        Booking booking = getBookingFromDB(id);
+        var booking = getBookingFromDB(id);
         booking.validateIfRoomIsNotInRESERVEDStatus(booking);
         var result = isRoomBookedInHotelService(booking);
         booking.validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(result, booking);
@@ -110,7 +108,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Transactional
     @Override
     public Booking cancelBooking(UUID id) {
-        Booking booking = getBookingFromDB(id);
+        var booking = getBookingFromDB(id);
         booking.validateIfCanCancelBooking(booking);
         booking.setStatus(INIT_CANCEL_BOOKING);
         booking = bookingOutPort.upsertBooking(booking);
@@ -166,7 +164,6 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         var toDate = booking.getToDate();
         if (bookingOutPort.getBooking(userId, roomId, fromDate, toDate).isPresent())
             throw new BadRequestException(format(SERVICE_BOOKING_IS_ALREADY_EXIST_MESSAGE, roomId, userId, fromDate, toDate));
-
     }
 
     private boolean isRoomBookedInHotelService(Booking booking) {
@@ -180,7 +177,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     }
 
     private Booking getBookingFromDB(UUID id) {
-        Optional<Booking> booking = bookingOutPort.getBooking(id);
+        var booking = bookingOutPort.getBooking(id);
         if (booking.isPresent())
             return booking.get();
         else

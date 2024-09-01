@@ -10,6 +10,6 @@
     </parent>
 
     <artifactId>kafka-config</artifactId>
-    <version>${kafka.nodule.version}</version>
+    <version>${kafka.module.version}</version>
 
 </project>

@@ -68,8 +68,8 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
     @Transactional
     @Override
     public void consumer(BookingMessage bookingMessage) {
-        BookingMessageStatus status = bookingMessage.status();
-        switch (status) {
+        var bookingMessageStatus = bookingMessage.status();
+        switch (bookingMessageStatus) {
             case CREATE_BOOKING -> {
                 var topicName = hotelServiceConfigData.getCreatedBookingTopicName();
                 var roomId = bookingMessage.roomId();
@@ -127,7 +127,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
             }
             case REMOVE_BOOKING -> {
                 var id = bookingMessage.roomBookingId();
-                RoomBooking roomBooking = getDBRoomBooking(id);
+                var roomBooking = getDBRoomBooking(id);
                 bookingMessage = toBookingMessage(roomBooking, BOOKING_REMOVED);
                 roomBookingRoomOutPort.removeRoomBooking(id);
                 var topicName = hotelServiceConfigData.getRemovedBookingTopicName();

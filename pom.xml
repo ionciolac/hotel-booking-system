@@ -33,7 +33,7 @@
         <spring.cloud.starter.openfeign>4.1.3</spring.cloud.starter.openfeign>
 
         <common.module.version>0.0.1-SNAPSHOT</common.module.version>
-        <kafka.nodule.version>0.0.1-SNAPSHOT</kafka.nodule.version>
+        <kafka.module.version>0.0.1-SNAPSHOT</kafka.module.version>
         <hotel.service.version>0.0.1-SNAPSHOT</hotel.service.version>
         <user.service.version>0.0.1-SNAPSHOT</user.service.version>
         <booking.service.version>0.0.1-SNAPSHOT</booking.service.version>

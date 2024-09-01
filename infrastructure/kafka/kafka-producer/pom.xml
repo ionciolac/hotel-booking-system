@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>kafka-producer</artifactId>
-    <version>${kafka.nodule.version}</version>
+    <version>${kafka.module.version}</version>
 
     <dependencies>
         <dependency>

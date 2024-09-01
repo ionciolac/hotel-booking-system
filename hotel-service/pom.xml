@@ -46,17 +46,17 @@
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-model</artifactId>
-            <version>${kafka.nodule.version}</version>
+            <version>${kafka.module.version}</version>
         </dependency>
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-producer</artifactId>
-            <version>${kafka.nodule.version}</version>
+            <version>${kafka.module.version}</version>
         </dependency>
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-consumer</artifactId>
-            <version>${kafka.nodule.version}</version>
+            <version>${kafka.module.version}</version>
         </dependency>
     </dependencies>
 

@@ -10,14 +10,9 @@
     </parent>
 
     <artifactId>kafka-model</artifactId>
-    <version>${kafka.nodule.version}</version>
+    <version>${kafka.module.version}</version>
 
     <dependencies>
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>common</artifactId>
-            <version>${common.module.version}</version>
-        </dependency>
     </dependencies>
 
 </project>
