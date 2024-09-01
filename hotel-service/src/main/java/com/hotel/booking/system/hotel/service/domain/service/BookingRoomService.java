@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
@@ -44,11 +43,11 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
     private final RoomInPort roomInPort;
 
     @Override
-    public boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
+    public boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
         validateReservationDates(fromDate, toDate);
         var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, SYSTEM_CHECKIN_HOUR, 0);
         var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, SYSTEM_CHECKOUT_HOUR, 0);
-        return isRoomBooked(roomId, searchFromDate, searchToDate);
+        return isRoomBooked(roomId, userId, searchFromDate, searchToDate);
     }
 
     @Override
@@ -82,7 +81,8 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 validateReservationDates(fromDate, toDate);
                 var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0);
                 var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0);
-                if (isRoomBooked(roomId, searchFromDate, searchToDate)) {
+                var userId = bookingMessage.userId();
+                if (isRoomBooked(roomId, userId, searchFromDate, searchToDate)) {
                     bookingMessage = toBookingMessage(bookingMessage, FAILED_CREATE_BOOKING);
                     bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
                 } else {
@@ -90,7 +90,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                     var pricePerNight = room.getPricePerNight();
                     var roomBooking = RoomBooking.builder()
                             .room(room)
-                            .userId(bookingMessage.userId())
+                            .userId(userId)
                             .bookingId(bookingMessage.bookingId())
                             .fromDate(addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0))
                             .toDate(addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0))
@@ -100,10 +100,30 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                             .currency(room.getCurrency())
                             .build();
                     roomBooking.generateID();
-                    roomBooking = roomBookingRoomOutPort.insertRoomBooking(roomBooking);
+                    roomBooking = roomBookingRoomOutPort.upsertRoomBooking(roomBooking);
                     bookingMessage = toBookingMessage(roomBooking, BOOKING_CREATED);
                     bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
                 }
+            }
+            case UPDATE_BOOKING -> {
+                var topicName = hotelServiceConfigData.getUpdatedBookingTopicName();
+                var roomBooking = getDBRoomBooking(bookingMessage.roomBookingId());
+                var roomId = bookingMessage.roomId();
+                var room = roomInPort.getRoom(roomId);
+                var fromDate = bookingMessage.fromDate();
+                var toDate = bookingMessage.toDate();
+                var checkinHour = getCheckinHour(room);
+                var checkoutHour = getCheckoutHour(room);
+                var nights = ChronoUnit.DAYS.between(fromDate, toDate);
+                var pricePerNight = room.getPricePerNight();
+                roomBooking.setFromDate(addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0));
+                roomBooking.setToDate(addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0));
+                roomBooking.setNightsNumber(nights);
+                roomBooking.setPricePerNight(pricePerNight);
+                roomBooking.setTotalPrice(nights * pricePerNight);
+                roomBooking = roomBookingRoomOutPort.upsertRoomBooking(roomBooking);
+                bookingMessage = toBookingMessage(roomBooking, BOOKING_UPDATED);
+                bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
             }
             case REMOVE_BOOKING -> {
                 var id = bookingMessage.roomBookingId();
@@ -117,16 +137,16 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
     }
 
     private RoomBooking getDBRoomBooking(UUID id) {
-        Optional<RoomBooking> roomBooking = roomBookingRoomOutPort.getRoomBooking(id);
+        var roomBooking = roomBookingRoomOutPort.getRoomBooking(id);
         if (roomBooking.isPresent())
             return roomBooking.get();
         else
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, BOOKING, id));
     }
 
-    private boolean isRoomBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
+    private boolean isRoomBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
         roomInPort.getRoom(roomId);
-        return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, fromDate, toDate);
+        return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, userId, fromDate, toDate);
     }
 
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {

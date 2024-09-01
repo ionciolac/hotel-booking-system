@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.hotel.booking.system.hotel.service.adapters.out.persistence.specification.RoomBookingEntitySpecification.fromDateToDateFilter;
-import static com.hotel.booking.system.hotel.service.adapters.out.persistence.specification.RoomBookingEntitySpecification.roomIdFilter;
+import static com.hotel.booking.system.hotel.service.adapters.out.persistence.specification.RoomBookingEntitySpecification.*;
 
 @RequiredArgsConstructor
 @Service
@@ -24,16 +23,17 @@ public class BookingRoomPersistenceAdapter implements BookingRoomOutPort {
     private final BookingRoomPersistenceMapper bookingRoomPersistenceMapper;
 
     @Override
-    public RoomBooking insertRoomBooking(RoomBooking roomBooking) {
+    public RoomBooking upsertRoomBooking(RoomBooking roomBooking) {
         var roomBookingEntity = roomBookingRepository
                 .save(bookingRoomPersistenceMapper.toRoomBookingEntity(roomBooking));
         return bookingRoomPersistenceMapper.toRoomBooking(roomBookingEntity);
     }
 
     @Override
-    public boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
+    public boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
         Specification<RoomBookingEntity> specification = Specification
                 .where(roomIdFilter(roomId))
+                .and(userIdFilter(userId))
                 .and(fromDateToDateFilter(fromDate, toDate));
         return !roomBookingRepository.findAll(specification).isEmpty();
     }

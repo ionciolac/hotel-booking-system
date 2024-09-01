@@ -31,6 +31,17 @@ public class BookingKafkaListener {
     }
 
     @KafkaListener(groupId = "${kafka-consumer-config.hotel-service-consumer-group-id}",
+            topics = "${hotel-service.update-booking-topic-name}")
+    public void updateBookingListener(@Payload List<BookingMessage> messages,
+                                      @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
+                                      @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
+                                      @Header(KafkaHeaders.OFFSET) List<String> offsets) {
+        log.info("{} number of update bookings received with keys: {}, partitions: {} and offsets: {}",
+                messages.size(), keys, partitions, offsets);
+        messages.forEach(bookingListener::consumer);
+    }
+
+    @KafkaListener(groupId = "${kafka-consumer-config.hotel-service-consumer-group-id}",
             topics = "${hotel-service.remove-booking-topic-name}")
     public void deleteBookingListener(@Payload List<BookingMessage> messages,
                                       @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,

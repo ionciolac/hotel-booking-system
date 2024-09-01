@@ -7,6 +7,7 @@ import com.hotel.booking.system.bookingservice.ports.in.messaging.BookingRoomLis
 import com.hotel.booking.system.bookingservice.ports.in.rest.BookingInPort;
 import com.hotel.booking.system.bookingservice.ports.out.messaging.BookingRoomPublisher;
 import com.hotel.booking.system.bookingservice.ports.out.persistence.BookingOutPort;
+import com.hotel.booking.system.common.common.BookingStatus;
 import com.hotel.booking.system.common.domain.exception.BadRequestException;
 import com.hotel.booking.system.common.domain.exception.NotFoundException;
 import com.hotel.booking.system.kafka.model.BookingMessage;
@@ -21,8 +22,7 @@ import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.BookingStatus.*;
 import static com.hotel.booking.system.common.domain.utils.AppCommonMessages.*;
-import static com.hotel.booking.system.kafka.model.BookingMessageStatus.CREATE_BOOKING;
-import static com.hotel.booking.system.kafka.model.BookingMessageStatus.REMOVE_BOOKING;
+import static com.hotel.booking.system.kafka.model.BookingMessageStatus.*;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -43,20 +43,37 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Override
     public Booking createBooking(Booking booking) {
         validateIfBookingExist(booking);
-        var result = isRoomBookedInHotelService(booking);
-        booking.validateIfRoomIsBookedThenThrowException(result, booking);
+        var isRoomBooked = isRoomBookedInHotelService(booking);
+        booking.validateIfRoomIsBookedThenThrowException(isRoomBooked, booking);
         booking.setStatus(RESERVED);
         booking.generateID();
         return bookingOutPort.upsertBooking(booking);
     }
 
-    //TODO: add functionality to modify days of room bookings in hotel service in case when booking is in booked status
     @Transactional
     @Override
     public Booking updateBooking(Booking booking) {
-        Booking dbBooking = getBookingFromDB(booking.getId());
-        patch(dbBooking, booking);
-        dbBooking = bookingOutPort.upsertBooking(dbBooking);
+        var dbBooking = getBookingFromDB(booking.getId());
+        dbBooking.validateIfAtLeastOneDateWasChanged(dbBooking, booking);
+        booking.setRoomId(dbBooking.getRoomId());
+        booking.setUserId(dbBooking.getUserId());
+        var isRoomBooked = isRoomBookedInHotelService(booking);
+        dbBooking.validateIfRoomIsBookedThenThrowException(isRoomBooked, booking);
+        BookingStatus status = dbBooking.getStatus();
+        switch (status) {
+            case RESERVED -> {
+                patch(dbBooking, booking);
+                dbBooking = bookingOutPort.upsertBooking(dbBooking);
+            }
+            case BOOKED -> {
+                booking.setRoomBookingId(dbBooking.getRoomBookingId());
+                var bookingMessage = toBookingMessage(booking, UPDATE_BOOKING);
+                var topicName = bookingServiceConfigData.getUpdateBookingTopicName();
+                dbBooking.setStatus(INIT_MODIFY_BOOKING_DATES);
+                bookingRoomPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+            }
+            default -> throw new BadRequestException(format(SERVICE_CANNOT_UPDATE_BOOKING_MESSAGE, RESERVED, BOOKED));
+        }
         return bookingOutPort.upsertBooking(dbBooking);
     }
 
@@ -122,6 +139,17 @@ public class BookingService implements BookingInPort, BookingRoomListener {
                 booking.setStatus(ROOM_IS_ALREADY_BOOKED);
                 bookingOutPort.upsertBooking(booking);
             }
+            case BOOKING_UPDATED -> {
+                // TODO: update payment
+                Booking dbBooking = getBookingFromDB(bookingMessage.bookingId());
+                var booking = Booking.builder()
+                        .fromDate(bookingMessage.fromDate())
+                        .toDate(bookingMessage.toDate())
+                        .build();
+                patch(dbBooking, booking);
+                dbBooking.setStatus(BOOKED);
+                bookingOutPort.upsertBooking(dbBooking);
+            }
             case BOOKING_REMOVED -> {
                 var booking = getBookingFromDB(bookingMessage.bookingId());
                 booking.setStatus(BOOKED_CANCELED);
@@ -129,7 +157,6 @@ public class BookingService implements BookingInPort, BookingRoomListener {
                 // TODO: refund payment
             }
         }
-
     }
 
     private void validateIfBookingExist(Booking booking) {
@@ -143,15 +170,12 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     }
 
     private boolean isRoomBookedInHotelService(Booking booking) {
-        var roomID = booking.getRoomId();
-        var fromDate = booking.getFromDate();
-        var toDate = booking.getToDate();
-        return isRoomBookedInHotelService(roomID, fromDate, toDate);
+        return isRoomBookedInHotelService(booking.getRoomId(), booking.getUserId(), booking.getFromDate(),
+                booking.getToDate());
     }
 
-
-    private boolean isRoomBookedInHotelService(UUID roomID, LocalDateTime fromDate, LocalDateTime toDate) {
-        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, fromDate, toDate).getBody())
+    private boolean isRoomBookedInHotelService(UUID roomID, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
+        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, userId, fromDate, toDate).getBody())
                 .isRoomIsBooked();
     }
 

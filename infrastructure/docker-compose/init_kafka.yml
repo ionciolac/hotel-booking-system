@@ -11,12 +11,16 @@ services:
       echo -e 'Deleting kafka topics'
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic create-booking-topic --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic created-booking-topic --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic update-booking-topic --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic updated-booking-topic --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic remove-booking-topic --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic removed-booking-topic --delete --if-exists
 
       echo -e 'Creating kafka topics'
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic create-booking-topic --replication-factor 3 --partitions 3
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic created-booking-topic --replication-factor 3 --partitions 3
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic update-booking-topic --replication-factor 3 --partitions 3
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic updated-booking-topic --replication-factor 3 --partitions 3
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic remove-booking-topic --replication-factor 3 --partitions 3
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic removed-booking-topic --replication-factor 3 --partitions 3
 

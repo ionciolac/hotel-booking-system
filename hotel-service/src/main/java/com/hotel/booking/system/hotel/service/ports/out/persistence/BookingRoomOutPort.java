@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface BookingRoomOutPort {
 
-    RoomBooking insertRoomBooking(RoomBooking roomBooking);
+    RoomBooking upsertRoomBooking(RoomBooking roomBooking);
 
-    boolean checkIfRoomIsBooked(UUID roomId, LocalDateTime fromDate, LocalDateTime toDate);
+    boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate);
 
     Optional<RoomBooking> getRoomBooking(UUID id);
 

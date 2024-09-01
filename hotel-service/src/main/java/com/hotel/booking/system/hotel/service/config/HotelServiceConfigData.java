@@ -13,8 +13,8 @@ public class HotelServiceConfigData {
 
     private String createBookingTopicName;
     private String createdBookingTopicName;
-//    private String updateBookingTopicName;
-//    private String updatedBookingTopicName;
+    private String updateBookingTopicName;
+    private String updatedBookingTopicName;
     private String removeBookingTopicName;
     private String removedBookingTopicName;
 }

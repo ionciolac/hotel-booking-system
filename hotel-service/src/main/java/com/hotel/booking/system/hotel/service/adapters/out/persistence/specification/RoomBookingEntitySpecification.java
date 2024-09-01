@@ -13,6 +13,10 @@ public class RoomBookingEntitySpecification {
         return (root, query, builder) -> builder.equal(root.get("room").get("id"), roomId);
     }
 
+    public static Specification<RoomBookingEntity> userIdFilter(UUID userId) {
+        return (root, query, builder) -> builder.notEqual(root.get("userId"), userId);
+    }
+
     public static Specification<RoomBookingEntity> fromDateToDateFilter(LocalDateTime fromDate, LocalDateTime toDate) {
         return (root, query, builder) -> {
             Predicate fromDatePredicate = builder.lessThanOrEqualTo(root.get("fromDate"), toDate);

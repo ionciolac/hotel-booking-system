@@ -60,4 +60,13 @@ public class Booking extends BaseId {
         if (ChronoUnit.HOURS.between(LocalDateTime.now(), booking.getFromDate()) <= 24)
             throw new BadRequestException(SERVICE_BOOKING_CANNOT_BE_CANCELED_LESS_24H_BEFORE_CHECKIN_MESSAGE);
     }
+
+    public void validateIfAtLeastOneDateWasChanged(Booking originalObject, Booking newObject) {
+        var fromDate = originalObject.getFromDate().toLocalDate();
+        var toDate = originalObject.getToDate().toLocalDate();
+        var newFromDate = newObject.getFromDate().toLocalDate();
+        var newToDate = newObject.getToDate().toLocalDate();
+        if (fromDate.equals(newFromDate) && toDate.equals(newToDate))
+            throw new BadRequestException(SERVICE_VALIDATE_IF_DATES_WAS_CHANGED_ON_UPDATE_MESSAGE);
+    }
 }

@@ -13,7 +13,8 @@ import java.util.UUID;
 public interface HotelServiceClient {
 
     @GetMapping("/is-room-available")
-    ResponseEntity<IsRoomBookedResponse> checkIfRoomIsBooked(@RequestParam UUID id,
+    ResponseEntity<IsRoomBookedResponse> checkIfRoomIsBooked(@RequestParam("room_id") UUID roomId,
+                                                             @RequestParam("user_id") UUID userId,
                                                              @RequestParam("from_date") LocalDateTime fromDate,
                                                              @RequestParam("to_date") LocalDateTime toDate);
 }

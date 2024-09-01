@@ -24,4 +24,6 @@ public class AppCommonMessages {
     public static final String SERVICE_BOOKING_MUST_BE_IN_RESERVED_STATUS_MESSAGE = "Booking %s must be in status %s to init payment.";
     public static final String SERVICE_BOOKING_CANNOT_BE_CANCELED_LESS_24H_BEFORE_CHECKIN_MESSAGE = "Booking can't be canceled because is less then 24h. Before check in.";
     public static final String SERVICE_BOOKING_CANNOT_BE_CANCELED_WRONG_STATUS_MESSAGE = "Only bookings in status %s can be canceled";
+    public static final String SERVICE_CANNOT_UPDATE_BOOKING_MESSAGE = "Only in status %s or %s can update booking.";
+    public static final String SERVICE_VALIDATE_IF_DATES_WAS_CHANGED_ON_UPDATE_MESSAGE = "Please ensure that at least one date was changed.";
 }
