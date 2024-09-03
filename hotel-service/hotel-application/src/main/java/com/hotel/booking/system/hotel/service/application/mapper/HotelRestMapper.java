@@ -10,9 +10,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface HotelRestMapper {
 
+    @Mapping(target = "rooms", ignore = true)
     @Mapping(target = "id", ignore = true)
     Hotel toHotel(CreateHotelRequest createHotelRequest);
 
+    @Mapping(target = "rooms", ignore = true)
     Hotel toHotel(UpdateHotelRequest updateHotelRequest);
 
     HotelResponse toHotelResponse(Hotel hotel);
