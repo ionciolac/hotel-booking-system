@@ -75,7 +75,7 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
 
     void checkIfUserHasAddFeedbackToHotel(UUID userId, UUID hotelId) {
         if (hotelFeedbackOutPort.hasUserAddFeedbackToHotel(userId, hotelId))
-            throw new AlreadyExistException(format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, hotelId));
+            throw new AlreadyExistException(format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, HOTEL, hotelId));
     }
 
     void patch(HotelFeedback target, HotelFeedback source) {

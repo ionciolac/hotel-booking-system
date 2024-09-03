@@ -19,7 +19,7 @@ public class AppCommonMessages {
     public static final String SERVICE_USER_ALREADY_EXIST_MESSAGE = "User with same username, phoneNumber and email already exist in DB.";
     public static final String SERVICE_HOTEL_ALREADY_EXIST_ON_ADDRESS_MESSAGE = "Hotel with name: %s with entered address already exist in DB.";
     public static final String SERVICE_ROOM_ALREADY_EXIST_MESSAGE = "Room with door number: %s already exist in hotel: %s";
-    public static final String SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE = "User with id: %s already added feedback to hotel with id %s";
+    public static final String SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE = "User with id: %s already added feedback to %s with id %s";
     public static final String SERVICE_RESERVATION_DATE_VALIDATION_MESSAGE = "toDate param can't be smaller or equal to fromDate param";
     public static final String SERVICE_ROOM_ALREADY_IS_BOOKED_FROM_TO_DATE_MESSAGE = "Room with id: %s already is booked from date: %s to date %s.";
     public static final String SERVICE_BOOKING_IS_BOOKED_AND_CANNOT_BE_REMOVED_MESSAGE = "Booking is in booked and can't be removed. First cancel booking.";

@@ -11,11 +11,11 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface HotelFeedbackPersistenceMapper {
 
-    @Named("withoutRoomHotelEntityToHotel")
+    @Named("withoutRoomHotelInEntityToHotel")
     @Mapping(target = "rooms", ignore = true)
     Hotel hotelEntityToHotel(HotelEntity hotelEntity);
 
-    @Mapping(target = "hotel", qualifiedByName = "withoutRoomHotelEntityToHotel")
+    @Mapping(target = "hotel", qualifiedByName = "withoutRoomHotelInEntityToHotel")
     HotelFeedback toHotelFeedback(HotelFeedbackEntity hotelFeedbackEntity);
 
     HotelFeedbackEntity toFeedbackEntity(HotelFeedback hotelFeedback);
