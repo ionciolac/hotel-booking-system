@@ -5,7 +5,6 @@ import com.hotel.booking.system.common.common.exception.AlreadyExistException;
 import com.hotel.booking.system.common.common.exception.BadRequestException;
 import com.hotel.booking.system.common.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,16 +44,6 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage(), ex);
         var exceptionResponse = ExceptionResponse.builder().date(Instant.now()).message(ex.getMessage()).build();
         return ResponseEntity.status(NOT_FOUND).body(exceptionResponse);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(value = {DataIntegrityViolationException.class})
-    @ResponseStatus(BAD_REQUEST)
-    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        log.error(ex.getMessage(), ex);
-        var msg = "Can't delete object because this object has child's. Delete them first.";
-        var exceptionResponse = ExceptionResponse.builder().date(Instant.now()).message(msg).build();
-        return ResponseEntity.status(BAD_REQUEST).body(exceptionResponse);
     }
 
     @ResponseBody

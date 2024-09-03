@@ -28,12 +28,10 @@
             <artifactId>common-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--        after refactoring remove-->
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--        after refactoring remove-->
     </dependencies>
 </project>

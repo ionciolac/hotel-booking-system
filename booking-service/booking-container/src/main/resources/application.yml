@@ -25,14 +25,16 @@ spring:
   #      platform: postgres
 
 booking-service:
-  hotel-service-address: localhost
-  hotel-service-port: 8031
   create-booking-topic-name: create-booking-topic
   created-booking-topic-name: created-booking-topic
   update-booking-topic-name: update-booking-topic
   updated-booking-topic-name: updated-booking-topic
   remove-booking-topic-name: remove-booking-topic
   removed-booking-topic-name: removed-booking-topic
+
+inter-service-config:
+  hotel-service-address: localhost
+  hotel-service-port: 8031
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092

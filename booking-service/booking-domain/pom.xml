@@ -17,11 +17,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>${spring.cloud.starter.openfeign}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
@@ -33,18 +28,15 @@
             <artifactId>common-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--        after refactoring remove-->
+        <dependency>
+            <groupId>com.hotel.booking.system</groupId>
+            <artifactId>common-inter-service-communication</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>common-application</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <!--        after refactoring remove-->
     </dependencies>
 </project>

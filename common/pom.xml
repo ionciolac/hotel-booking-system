@@ -17,6 +17,7 @@
         <module>common-common</module>
         <module>common-data-access</module>
         <module>common-domain</module>
+        <module>common-inter-service-communication</module>
     </modules>
 
     <dependencies>

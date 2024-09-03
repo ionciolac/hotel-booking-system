@@ -1,4 +1,4 @@
-package com.hotel.booking.system.booking.service.domain.client;
+package com.hotel.booking.system.common.inter.service.communication.client;
 
 import com.hotel.booking.system.common.application.data.res.booking.IsRoomBookedResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@FeignClient(url = "${booking-service.hotel-service-address}:${booking-service.hotel-service-port}", name = "hotel-service")
+@FeignClient(url = "${inter-service-config.hotel-service-address}:${inter-service-config.hotel-service-port}", name = "hotel-service")
 public interface HotelServiceClient {
 
     @GetMapping("/is-room-available")

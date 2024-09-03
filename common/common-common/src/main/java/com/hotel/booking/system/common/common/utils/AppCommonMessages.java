@@ -1,5 +1,8 @@
 package com.hotel.booking.system.common.common.utils;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class AppCommonMessages {
 
     public static final String HOTEL = "Hotel";

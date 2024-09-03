@@ -1,6 +1,5 @@
 package com.hotel.booking.system.booking.service.domain.service;
 
-import com.hotel.booking.system.booking.service.domain.client.HotelServiceClient;
 import com.hotel.booking.system.booking.service.domain.config.BookingServiceConfigData;
 import com.hotel.booking.system.booking.service.domain.model.Booking;
 import com.hotel.booking.system.booking.service.domain.ports.in.messaging.BookingRoomListener;
@@ -9,6 +8,7 @@ import com.hotel.booking.system.booking.service.domain.ports.out.messaging.Booki
 import com.hotel.booking.system.booking.service.domain.ports.out.persistence.BookingOutPort;
 import com.hotel.booking.system.common.common.exception.BadRequestException;
 import com.hotel.booking.system.common.common.exception.NotFoundException;
+import com.hotel.booking.system.common.inter.service.communication.client.HotelServiceClient;
 import com.hotel.booking.system.kafka.model.BookingMessage;
 import com.hotel.booking.system.kafka.model.BookingMessageStatus;
 import lombok.RequiredArgsConstructor;

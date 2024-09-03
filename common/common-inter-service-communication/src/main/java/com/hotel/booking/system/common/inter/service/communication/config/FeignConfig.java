@@ -1,6 +1,6 @@
-package com.hotel.booking.system.booking.service.domain.config;
+package com.hotel.booking.system.common.inter.service.communication.config;
 
-import com.hotel.booking.system.booking.service.domain.client.ClientExceptionHandling;
+import com.hotel.booking.system.common.inter.service.communication.exception.handiling.ClientExceptionHandling;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

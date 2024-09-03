@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableFeignClients(basePackages = "com.hotel.booking.system.booking.service.domain.client")
+@EnableFeignClients(basePackages = "com.hotel.booking.system.common.inter.service.communication.client")
 @EnableJpaAuditing
 @EntityScan(basePackages = "com.hotel.booking.system.booking.service.data.access.entity")
 @EnableJpaRepositories(basePackages = "com.hotel.booking.system.booking.service.data.access.repository")

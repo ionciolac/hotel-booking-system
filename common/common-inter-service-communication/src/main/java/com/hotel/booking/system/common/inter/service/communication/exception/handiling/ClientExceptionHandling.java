@@ -1,4 +1,4 @@
-package com.hotel.booking.system.booking.service.domain.client;
+package com.hotel.booking.system.common.inter.service.communication.exception.handiling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
