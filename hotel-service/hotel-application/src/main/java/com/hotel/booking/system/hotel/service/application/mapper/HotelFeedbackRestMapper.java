@@ -1,10 +1,10 @@
 package com.hotel.booking.system.hotel.service.application.mapper;
 
 import com.hotel.booking.system.common.common.enums.FeedbackMark;
-import com.hotel.booking.system.hotel.service.application.data.req.feedback.CreateFeedbackRequest;
-import com.hotel.booking.system.hotel.service.application.data.req.feedback.UpdateFeedbackRequest;
-import com.hotel.booking.system.hotel.service.application.data.res.feedback.FeedbackResponse;
-import com.hotel.booking.system.hotel.service.domain.model.Feedback;
+import com.hotel.booking.system.hotel.service.application.data.req.feedback.CreateHotelFeedbackRequest;
+import com.hotel.booking.system.hotel.service.application.data.req.feedback.UpdateHotelFeedbackRequest;
+import com.hotel.booking.system.hotel.service.application.data.res.feedback.HotelFeedbackResponse;
+import com.hotel.booking.system.hotel.service.domain.model.HotelFeedback;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -12,7 +12,7 @@ import org.mapstruct.Named;
 import static com.hotel.booking.system.common.common.enums.FeedbackMark.*;
 
 @Mapper(componentModel = "spring")
-public interface FeedbackRestMapper {
+public interface HotelFeedbackRestMapper {
 
     @Named("fromValueToEnum")
     default double fromValueToEnum(FeedbackMark feedbackMark) {
@@ -39,16 +39,18 @@ public interface FeedbackRestMapper {
         };
     }
 
+    @Mapping(target = "hotel.id", source = "hotelId")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromValueToEnum")
-    Feedback toFeedback(CreateFeedbackRequest createFeedbackRequest);
+    HotelFeedback toHotelFeedback(CreateHotelFeedbackRequest createHotelFeedbackRequest);
 
+    @Mapping(target = "hotel", ignore = true)
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "userFullName", ignore = true)
-    @Mapping(target = "hotelId", ignore = true)
     @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromValueToEnum")
-    Feedback toFeedback(UpdateFeedbackRequest updateFeedbackRequest);
+    HotelFeedback toHotelFeedback(UpdateHotelFeedbackRequest updateHotelFeedbackRequest);
 
+    @Mapping(target = "hotelId", source = "hotel.id")
     @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromEnumToValue")
-    FeedbackResponse toFeedbackResponse(Feedback feedback);
+    HotelFeedbackResponse toHotelFeedbackResponse(HotelFeedback hotelFeedback);
 }

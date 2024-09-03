@@ -15,9 +15,9 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "feedbacks")
+@Table(name = "hotel_feedbacks")
 @Entity
-public class FeedbackEntity extends EntityAuditing {
+public class HotelFeedbackEntity extends EntityAuditing {
 
     @Id
     private UUID id;

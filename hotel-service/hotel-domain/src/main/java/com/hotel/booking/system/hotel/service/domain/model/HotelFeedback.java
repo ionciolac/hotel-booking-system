@@ -14,10 +14,10 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Feedback extends BaseId {
+public class HotelFeedback extends BaseId {
 
-    private UUID hotelId;
     private UUID userId;
+    private Hotel hotel;
     private String userFullName;
     private String userMessage;
     private double userMark;

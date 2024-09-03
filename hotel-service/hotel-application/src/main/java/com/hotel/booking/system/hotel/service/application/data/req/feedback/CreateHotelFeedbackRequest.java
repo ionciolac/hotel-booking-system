@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateFeedbackRequest {
+public class CreateHotelFeedbackRequest {
 
     @JsonProperty("hotel_id")
     private UUID hotelId;

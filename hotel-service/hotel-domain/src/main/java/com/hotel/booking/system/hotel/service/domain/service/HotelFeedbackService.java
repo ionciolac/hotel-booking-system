@@ -2,15 +2,15 @@ package com.hotel.booking.system.hotel.service.domain.service;
 
 import com.hotel.booking.system.common.common.exception.AlreadyExistException;
 import com.hotel.booking.system.common.common.exception.NotFoundException;
-import com.hotel.booking.system.hotel.service.domain.model.Feedback;
-import com.hotel.booking.system.hotel.service.domain.ports.in.rest.FeedbackInPort;
+import com.hotel.booking.system.hotel.service.domain.model.HotelFeedback;
+import com.hotel.booking.system.hotel.service.domain.ports.in.rest.HotelFeedbackInPort;
 import com.hotel.booking.system.hotel.service.domain.ports.in.rest.HotelInPort;
-import com.hotel.booking.system.hotel.service.domain.ports.out.persistence.FeedbackOutPort;
-import com.hotel.booking.system.hotel.service.domain.wrapper.FeedbackWrapper;
+import com.hotel.booking.system.hotel.service.domain.ports.out.persistence.HotelFeedbackOutPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -21,51 +21,52 @@ import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
 @Service
-public class FeedbackService implements FeedbackInPort {
+public class HotelFeedbackService implements HotelFeedbackInPort {
 
-    private final FeedbackOutPort feedbackOutPort;
+    private final HotelFeedbackOutPort hotelFeedbackOutPort;
     // services
     private final HotelInPort hotelInPort;
 
+    @Transactional
     @Override
-    public Feedback createFeedback(Feedback feedback) {
-        var hotelId = feedback.getHotelId();
-        var userId = feedback.getUserId();
+    public HotelFeedback createHotelFeedback(HotelFeedback hotelFeedback) {
+        var hotelId = hotelFeedback.getHotel().getId();
+        var userId = hotelFeedback.getUserId();
         checkIfUserHasAddFeedbackToHotel(userId, hotelId);
-        feedback.generateID();
         var hotel = hotelInPort.getHotel(hotelId);
-        var feedbackWrapper = FeedbackWrapper.builder().feedback(feedback).hotel(hotel).build();
-        return feedbackOutPort.upsertFeedback(feedbackWrapper);
+        hotelFeedback.setHotel(hotel);
+        hotelFeedback.generateID();
+        return hotelFeedbackOutPort.upsertHotelFeedback(hotelFeedback);
     }
 
+    @Transactional
     @Override
-    public Feedback updateFeedback(Feedback feedback) {
-        var id = feedback.getId();
+    public HotelFeedback updateHotelFeedback(HotelFeedback hotelFeedback) {
+        var id = hotelFeedback.getId();
         var dbFeedback = getDBFeedback(id);
-        var hotel = hotelInPort.getHotel(dbFeedback.getHotelId());
-        patch(dbFeedback, feedback);
-        var feedbackWrapper = FeedbackWrapper.builder().hotel(hotel).feedback(dbFeedback).build();
-        return feedbackOutPort.upsertFeedback(feedbackWrapper);
+        patch(dbFeedback, hotelFeedback);
+        return hotelFeedbackOutPort.upsertHotelFeedback(dbFeedback);
     }
 
+    @Transactional
     @Override
-    public void deleteFeedback(UUID id) {
+    public void deleteHotelFeedback(UUID id) {
         getDBFeedback(id);
-        feedbackOutPort.deleteFeedback(id);
+        hotelFeedbackOutPort.deleteHotelFeedback(id);
     }
 
     @Override
-    public Feedback getFeedback(UUID id) {
+    public HotelFeedback getHotelFeedback(UUID id) {
         return getDBFeedback(id);
     }
 
     @Override
-    public Page<Feedback> getHotelFeedback(UUID hotelId, Pageable pageable) {
-        return feedbackOutPort.getHotelFeedback(hotelId, pageable);
+    public Page<HotelFeedback> getHotelFeedback(UUID hotelId, Pageable pageable) {
+        return hotelFeedbackOutPort.getHotelFeedback(hotelId, pageable);
     }
 
-    private Feedback getDBFeedback(UUID id) {
-        var feedback = feedbackOutPort.getFeedback(id);
+    private HotelFeedback getDBFeedback(UUID id) {
+        var feedback = hotelFeedbackOutPort.getHotelFeedback(id);
         if (feedback.isPresent())
             return feedback.get();
         else
@@ -73,11 +74,11 @@ public class FeedbackService implements FeedbackInPort {
     }
 
     void checkIfUserHasAddFeedbackToHotel(UUID userId, UUID hotelId) {
-        if (feedbackOutPort.hasUserAddFeedbackToHotel(userId, hotelId))
+        if (hotelFeedbackOutPort.hasUserAddFeedbackToHotel(userId, hotelId))
             throw new AlreadyExistException(format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, hotelId));
     }
 
-    void patch(Feedback target, Feedback source) {
+    void patch(HotelFeedback target, HotelFeedback source) {
         if (hasText(source.getUserMessage())) {
             target.setUserMessage(source.getUserMessage());
         }
