@@ -11,12 +11,13 @@
 
     <artifactId>infrastructure</artifactId>
     <packaging>pom</packaging>
+
+    <name>infrastructure</name>
+    <description>infrastructure</description>
+
     <modules>
         <module>kafka</module>
     </modules>
-
-    <properties>
-    </properties>
 
     <dependencies>
     </dependencies>

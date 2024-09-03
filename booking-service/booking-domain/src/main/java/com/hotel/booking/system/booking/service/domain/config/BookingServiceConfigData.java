@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BookingServiceConfigData {
 
-    private String hotelServiceAddress;
-    private String hotelServicePort;
     private String createBookingTopicName;
     private String createdBookingTopicName;
     private String updateBookingTopicName;

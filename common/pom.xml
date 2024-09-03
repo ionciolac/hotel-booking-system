@@ -12,6 +12,10 @@
     <artifactId>common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <name>common</name>
+    <description>common</description>
+
     <modules>
         <module>common-application</module>
         <module>common-common</module>

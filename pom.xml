@@ -14,6 +14,7 @@
     <artifactId>hotel-booking-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <name>hotel-booking-system</name>
     <description>hotel-booking-system</description>
 
