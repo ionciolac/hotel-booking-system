@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>kafka-model</artifactId>
-    <version>${kafka.module.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
     </dependencies>

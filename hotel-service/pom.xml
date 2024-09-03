@@ -10,54 +10,20 @@
     </parent>
 
     <artifactId>hotel-service</artifactId>
-    <version>${hotel.service.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <name>hotel-service</name>
     <description>hotel-service</description>
 
-    <properties>
-    </properties>
+    <modules>
+        <module>hotel-application</module>
+        <module>hotel-container</module>
+        <module>hotel-data-access</module>
+        <module>hotel-domain</module>
+        <module>hotel-messaging</module>
+    </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.openapi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>common</artifactId>
-            <version>${common.module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>kafka-model</artifactId>
-            <version>${kafka.module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>kafka-producer</artifactId>
-            <version>${kafka.module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hotel.booking.system</groupId>
-            <artifactId>kafka-consumer</artifactId>
-            <version>${kafka.module.version}</version>
-        </dependency>
     </dependencies>
-
 </project>

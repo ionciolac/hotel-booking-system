@@ -10,13 +10,13 @@
     </parent>
 
     <artifactId>kafka-consumer</artifactId>
-    <version>${kafka.module.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>com.hotel.booking.system</groupId>
             <artifactId>kafka-config</artifactId>
-            <version>${kafka.module.version}</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
