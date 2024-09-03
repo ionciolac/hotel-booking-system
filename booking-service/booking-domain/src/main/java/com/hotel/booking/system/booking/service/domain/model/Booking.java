@@ -32,36 +32,36 @@ public class Booking extends BaseId {
     private LocalDateTime toDate;
     private BookingStatus status;
 
-    public void validateIfRoomIsBookedThenThrowException(boolean isRoomBookedInHotelService, Booking booking) {
+    public void checkIfRoomIsBookedThenThrowException(boolean isRoomBooked, Booking booking) {
         var roomID = booking.getRoomId();
         var fromDate = booking.getFromDate();
         var toDate = booking.getToDate();
-        if (isRoomBookedInHotelService) {
-            throw new BadRequestException(format(SERVICE_ROOM_ALREADY_IS_BOOKED_FROM_TO_DATE_MESSAGE, roomID, fromDate, toDate));
+        if (isRoomBooked) {
+            var msg = format(SERVICE_ROOM_ALREADY_IS_BOOKED_FROM_TO_DATE_MESSAGE, roomID, fromDate, toDate);
+            throw new BadRequestException(msg);
         }
     }
 
-    public void validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(boolean isRoomBookedInHotelService, Booking booking) {
-        if (isRoomBookedInHotelService) {
+    public void checkIfRoomIsBookedThenSetStatusToROOM_RESERVED(boolean isRoomBooked, Booking booking) {
+        if (isRoomBooked)
             booking.setStatus(ROOM_IS_ALREADY_BOOKED);
-        }
     }
 
-    public void validateIfRoomIsNotInRESERVEDStatus(Booking booking) {
+    public void checkIfRoomIsNotInRESERVEDStatus(Booking booking) {
         if (!RESERVED.equals(booking.getStatus())) {
             var msg = format(SERVICE_BOOKING_MUST_BE_IN_RESERVED_STATUS_MESSAGE, booking.getId(), RESERVED);
             throw new BadRequestException(msg);
         }
     }
 
-    public void validateIfCanCancelBooking(Booking booking) {
+    public void checkIfCanCancelBooking(Booking booking) {
         if (!BOOKED.equals(booking.getStatus()))
             throw new BadRequestException(format(SERVICE_BOOKING_CANNOT_BE_CANCELED_WRONG_STATUS_MESSAGE, BOOKED));
         if (ChronoUnit.HOURS.between(LocalDateTime.now(), booking.getFromDate()) <= 24)
             throw new BadRequestException(SERVICE_BOOKING_CANNOT_BE_CANCELED_LESS_24H_BEFORE_CHECKIN_MESSAGE);
     }
 
-    public void validateIfAtLeastOneDateWasChanged(Booking originalObject, Booking newObject) {
+    public void checkIfAtLeastOneDateWasChanged(Booking originalObject, Booking newObject) {
         var fromDate = originalObject.getFromDate().toLocalDate();
         var toDate = originalObject.getToDate().toLocalDate();
         var newFromDate = newObject.getFromDate().toLocalDate();

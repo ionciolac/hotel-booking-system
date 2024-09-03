@@ -1,6 +1,5 @@
 package com.hotel.booking.system.hotel.service.data.access.adapter;
 
-import com.hotel.booking.system.hotel.service.data.access.entity.RoomBookingEntity;
 import com.hotel.booking.system.hotel.service.data.access.mapper.BookingRoomPersistenceMapper;
 import com.hotel.booking.system.hotel.service.data.access.repository.RoomBookingRepository;
 import com.hotel.booking.system.hotel.service.domain.model.RoomBooking;
@@ -33,7 +32,7 @@ public class BookingRoomPersistenceAdapter implements BookingRoomOutPort {
 
     @Override
     public boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
-        Specification<RoomBookingEntity> specification = Specification
+        var specification = Specification
                 .where(roomIdFilter(roomId))
                 .and(userIdFilter(userId))
                 .and(fromDateToDateFilter(fromDate, toDate));

@@ -57,8 +57,7 @@ public class FeedbackRestAdapter {
     public ResponseEntity<Page<FeedbackResponse>> getHotelFeedback(@RequestParam(name = "user_id") UUID hotelId,
                                                                    @RequestParam(defaultValue = "0") int page,
                                                                    @RequestParam(defaultValue = "10") int size) {
-        var pageable = PageRequest.of(page, size);
-        var result = feedbackInPort.getHotelFeedback(hotelId, pageable)
+        var result = feedbackInPort.getHotelFeedback(hotelId, PageRequest.of(page, size))
                 .map(feedbackRestMapper::toFeedbackResponse);
         return ResponseEntity.status(OK).body(result);
     }

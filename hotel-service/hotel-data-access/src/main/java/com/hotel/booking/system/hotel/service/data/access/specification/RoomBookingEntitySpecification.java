@@ -2,11 +2,13 @@ package com.hotel.booking.system.hotel.service.data.access.specification;
 
 import com.hotel.booking.system.hotel.service.data.access.entity.RoomBookingEntity;
 import jakarta.persistence.criteria.Predicate;
+import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@UtilityClass
 public class RoomBookingEntitySpecification {
 
     public static Specification<RoomBookingEntity> roomIdFilter(UUID roomId) {

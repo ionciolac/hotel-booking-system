@@ -42,7 +42,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     public Booking createBooking(Booking booking) {
         validateIfBookingExist(booking);
         var isRoomBooked = isRoomBookedInHotelService(booking);
-        booking.validateIfRoomIsBookedThenThrowException(isRoomBooked, booking);
+        booking.checkIfRoomIsBookedThenThrowException(isRoomBooked, booking);
         booking.setStatus(RESERVED);
         booking.generateID();
         return bookingOutPort.upsertBooking(booking);
@@ -52,11 +52,11 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Override
     public Booking updateBooking(Booking booking) {
         var dbBooking = getBookingFromDB(booking.getId());
-        dbBooking.validateIfAtLeastOneDateWasChanged(dbBooking, booking);
+        dbBooking.checkIfAtLeastOneDateWasChanged(dbBooking, booking);
         booking.setRoomId(dbBooking.getRoomId());
         booking.setUserId(dbBooking.getUserId());
         var isRoomBooked = isRoomBookedInHotelService(booking);
-        dbBooking.validateIfRoomIsBookedThenThrowException(isRoomBooked, booking);
+        dbBooking.checkIfRoomIsBookedThenThrowException(isRoomBooked, booking);
         var bookingStatus = dbBooking.getStatus();
         switch (bookingStatus) {
             case RESERVED -> {
@@ -94,9 +94,9 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Override
     public Booking payBooking(UUID id) {
         var booking = getBookingFromDB(id);
-        booking.validateIfRoomIsNotInRESERVEDStatus(booking);
+        booking.checkIfRoomIsNotInRESERVEDStatus(booking);
         var result = isRoomBookedInHotelService(booking);
-        booking.validateIfRoomIsBookedThenThenStatusToROOM_RESERVED(result, booking);
+        booking.checkIfRoomIsBookedThenSetStatusToROOM_RESERVED(result, booking);
         booking.setStatus(BOOKING_ROOM);
         booking = bookingOutPort.upsertBooking(booking);
         var bookingMessage = toBookingMessage(booking, CREATE_BOOKING);
@@ -109,7 +109,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     @Override
     public Booking cancelBooking(UUID id) {
         var booking = getBookingFromDB(id);
-        booking.validateIfCanCancelBooking(booking);
+        booking.checkIfCanCancelBooking(booking);
         booking.setStatus(INIT_CANCEL_BOOKING);
         booking = bookingOutPort.upsertBooking(booking);
         var bookingMessage = toBookingMessage(booking, REMOVE_BOOKING);

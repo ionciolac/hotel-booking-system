@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.utils.AppCommonMessages.*;
@@ -81,7 +80,7 @@ public class RoomService implements RoomInPort {
     }
 
     private Room getDBRoom(UUID id) {
-        Optional<Room> room = roomOutPort.getRoom(id);
+        var room = roomOutPort.getRoom(id);
         if (room.isPresent())
             return room.get();
         else

@@ -1,8 +1,6 @@
 package com.hotel.booking.system.hotel.service.data.access.adapter;
 
 import com.hotel.booking.system.common.common.enums.RoomType;
-import com.hotel.booking.system.hotel.service.data.access.entity.HotelEntity;
-import com.hotel.booking.system.hotel.service.data.access.entity.RoomEntity;
 import com.hotel.booking.system.hotel.service.data.access.mapper.HotelPersistenceMapper;
 import com.hotel.booking.system.hotel.service.data.access.mapper.RoomPersistenceMapper;
 import com.hotel.booking.system.hotel.service.data.access.mapper.RoomWithHotelPersistenceMapper;
@@ -56,8 +54,8 @@ public class RoomPersistenceAdapter implements RoomOutPort {
 
     @Override
     public Page<Room> getRooms(Hotel hotel, Integer floor, RoomType roomType, Pageable pageable) {
-        HotelEntity hotelEntity = hotelPersistenceMapper.toHotelEntity(hotel);
-        Specification<RoomEntity> specification = Specification
+        var hotelEntity = hotelPersistenceMapper.toHotelEntity(hotel);
+        var specification = Specification
                 .where(hotel == null ? null : hotelIdFilter(hotelEntity))
                 .and(floor == null ? null : floorFilter(floor))
                 .and(roomType == null ? null : roomTypeFilter(roomType));
@@ -67,7 +65,7 @@ public class RoomPersistenceAdapter implements RoomOutPort {
     @Override
     public Page<Room> getRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
                                Double minPricePerNight, Double maxPricePerNight, Pageable pageable) {
-        Specification<RoomEntity> specification = Specification
+        var specification = Specification
                 .where(filterByIsRoomAvailable(Boolean.TRUE))
                 .and(country == null ? null : filterByCountry(country))
                 .and(city == null ? null : filterByCity(city))
