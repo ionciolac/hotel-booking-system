@@ -1,21 +1,14 @@
 package com.hotel.booking.system.hotel.service.application.data.req.feedback;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hotel.booking.system.common.common.enums.FeedbackMark;
-import lombok.*;
+import com.hotel.booking.system.common.application.data.req.feedback.UpdateFeedbackRequest;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
-
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class UpdateHotelFeedbackRequest {
-
-    private UUID id;
-    @JsonProperty("user_message")
-    private String userMessage;
-    @JsonProperty("user_mark")
-    private FeedbackMark userMark;
+public class UpdateHotelFeedbackRequest extends UpdateFeedbackRequest {
 }

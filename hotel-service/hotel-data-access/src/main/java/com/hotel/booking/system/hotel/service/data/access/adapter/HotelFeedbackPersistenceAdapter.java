@@ -23,9 +23,9 @@ public class HotelFeedbackPersistenceAdapter implements HotelFeedbackOutPort {
 
     @Override
     public HotelFeedback upsertHotelFeedback(HotelFeedback hotelFeedback) {
-        var feedbackEntity = hotelFeedbackPersistenceMapper.toFeedbackEntity(hotelFeedback);
-        feedbackEntity = hotelFeedbackRepository.save(feedbackEntity);
-        return hotelFeedbackPersistenceMapper.toHotelFeedback(feedbackEntity);
+        var hotelFeedbackEntity = hotelFeedbackPersistenceMapper.toFeedbackEntity(hotelFeedback);
+        hotelFeedbackEntity = hotelFeedbackRepository.save(hotelFeedbackEntity);
+        return hotelFeedbackPersistenceMapper.toHotelFeedback(hotelFeedbackEntity);
     }
 
     @Override

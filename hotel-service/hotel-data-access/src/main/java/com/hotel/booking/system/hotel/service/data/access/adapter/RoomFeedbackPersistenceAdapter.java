@@ -16,7 +16,9 @@ import java.util.UUID;
 @Component
 public class RoomFeedbackPersistenceAdapter implements RoomFeedbackOutPort {
 
+    // repository
     private final RoomFeedbackRepository roomFeedbackRepository;
+    // mappers
     private final RoomFeedbackPersistenceMapper roomFeedbackPersistenceMapper;
 
     @Override

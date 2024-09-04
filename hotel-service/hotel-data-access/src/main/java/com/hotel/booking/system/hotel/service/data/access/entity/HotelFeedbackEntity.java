@@ -1,6 +1,6 @@
 package com.hotel.booking.system.hotel.service.data.access.entity;
 
-import com.hotel.booking.system.common.data.access.EntityAuditing;
+import com.hotel.booking.system.common.data.access.FeedbackEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,18 +17,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "hotel_feedbacks")
 @Entity
-public class HotelFeedbackEntity extends EntityAuditing {
+public class HotelFeedbackEntity extends FeedbackEntity {
 
     @Id
     private UUID id;
     @ManyToOne
+    @JoinColumn(name = "hotels_id", referencedColumnName = "id")
     private HotelEntity hotel;
-    @Column(name = "user_id")
-    private UUID userId;
-    @Column(name = "user_fullname")
-    private String userFullName;
-    @Column(name = "user_message")
-    private String userMessage;
-    @Column(name = "user_mark")
-    private double userMark;
 }

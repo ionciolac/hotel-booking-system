@@ -30,14 +30,14 @@ public class HotelFeedbackRestAdapter {
 
     @PostMapping
     public ResponseEntity<HotelFeedbackResponse> createHotelFeedback(@RequestBody CreateHotelFeedbackRequest req) {
-        var feedback = hotelFeedbackInPort.createHotelFeedback(hotelFeedbackRestMapper.toHotelFeedback(req));
-        return ResponseEntity.status(CREATED).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(feedback));
+        var hotelFeedback = hotelFeedbackInPort.createHotelFeedback(hotelFeedbackRestMapper.toHotelFeedback(req));
+        return ResponseEntity.status(CREATED).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(hotelFeedback));
     }
 
     @PatchMapping
     public ResponseEntity<HotelFeedbackResponse> updateHotelFeedback(@RequestBody UpdateHotelFeedbackRequest req) {
-        var feedback = hotelFeedbackInPort.updateHotelFeedback(hotelFeedbackRestMapper.toHotelFeedback(req));
-        return ResponseEntity.status(OK).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(feedback));
+        var hotelFeedback = hotelFeedbackInPort.updateHotelFeedback(hotelFeedbackRestMapper.toHotelFeedback(req));
+        return ResponseEntity.status(OK).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(hotelFeedback));
     }
 
     @DeleteMapping("/{id}")
@@ -49,8 +49,8 @@ public class HotelFeedbackRestAdapter {
 
     @GetMapping("/{id}")
     public ResponseEntity<HotelFeedbackResponse> getHotelFeedback(@PathVariable("id") UUID id) {
-        var feedback = hotelFeedbackInPort.getHotelFeedback(id);
-        return ResponseEntity.status(OK).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(feedback));
+        var hotelFeedback = hotelFeedbackInPort.getHotelFeedback(id);
+        return ResponseEntity.status(OK).body(hotelFeedbackRestMapper.toHotelFeedbackResponse(hotelFeedback));
     }
 
     @GetMapping

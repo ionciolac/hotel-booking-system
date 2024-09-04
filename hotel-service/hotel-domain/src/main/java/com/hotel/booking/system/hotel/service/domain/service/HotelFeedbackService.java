@@ -43,9 +43,9 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
     @Override
     public HotelFeedback updateHotelFeedback(HotelFeedback hotelFeedback) {
         var id = hotelFeedback.getId();
-        var dbFeedback = getDBFeedback(id);
-        patch(dbFeedback, hotelFeedback);
-        return hotelFeedbackOutPort.upsertHotelFeedback(dbFeedback);
+        var dbHotelFeedback = getDBFeedback(id);
+        patch(dbHotelFeedback, hotelFeedback);
+        return hotelFeedbackOutPort.upsertHotelFeedback(dbHotelFeedback);
     }
 
     @Transactional
@@ -66,9 +66,9 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
     }
 
     private HotelFeedback getDBFeedback(UUID id) {
-        var feedback = hotelFeedbackOutPort.getHotelFeedback(id);
-        if (feedback.isPresent())
-            return feedback.get();
+        var hotelFeedback = hotelFeedbackOutPort.getHotelFeedback(id);
+        if (hotelFeedback.isPresent())
+            return hotelFeedback.get();
         else
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, FEEDBACK, id));
     }
