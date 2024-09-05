@@ -68,7 +68,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
                 var bookingMessage = toBookingMessage(booking, UPDATE_BOOKING);
                 var topicName = bookingServiceConfigData.getUpdateBookingTopicName();
                 dbBooking.setStatus(INIT_MODIFY_BOOKING_DATES);
-                bookingRoomPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+                bookingRoomPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
             }
             default -> throw new BadRequestException(format(SERVICE_CANNOT_UPDATE_BOOKING_MESSAGE, RESERVED, BOOKED));
         }
@@ -101,7 +101,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         booking = bookingOutPort.upsertBooking(booking);
         var bookingMessage = toBookingMessage(booking, CREATE_BOOKING);
         var topicName = bookingServiceConfigData.getCreateBookingTopicName();
-        bookingRoomPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+        bookingRoomPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
         return booking;
     }
 
@@ -114,13 +114,13 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         booking = bookingOutPort.upsertBooking(booking);
         var bookingMessage = toBookingMessage(booking, REMOVE_BOOKING);
         var topicName = bookingServiceConfigData.getRemoveBookingTopicName();
-        bookingRoomPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+        bookingRoomPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
         return booking;
     }
 
     @Transactional
     @Override
-    public void consumer(BookingMessage bookingMessage) {
+    public void bookingConsumer(BookingMessage bookingMessage) {
         var status = bookingMessage.status();
         switch (status) {
             case BOOKING_CREATED -> {

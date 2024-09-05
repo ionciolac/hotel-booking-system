@@ -4,5 +4,5 @@ import com.hotel.booking.system.kafka.model.BookingMessage;
 
 public interface BookingPublisher {
 
-    void publish(String topic, String key, BookingMessage bookingMessage);
+    void publishBooking(String topic, String key, BookingMessage bookingMessage);
 }

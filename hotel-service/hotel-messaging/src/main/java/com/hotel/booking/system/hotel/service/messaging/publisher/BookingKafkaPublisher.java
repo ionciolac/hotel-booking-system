@@ -13,7 +13,7 @@ public class BookingKafkaPublisher implements BookingPublisher {
     private final KafkaProducer<String, BookingMessage> kafkaProducer;
 
     @Override
-    public void publish(String topic, String key, BookingMessage bookingMessage) {
+    public void publishBooking(String topic, String key, BookingMessage bookingMessage) {
         kafkaProducer.send(topic, key, bookingMessage);
     }
 }

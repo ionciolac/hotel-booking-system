@@ -4,5 +4,5 @@ import com.hotel.booking.system.kafka.model.BookingMessage;
 
 public interface BookingRoomListener {
 
-    void consumer(BookingMessage bookingMessage);
+    void bookingConsumer(BookingMessage bookingMessage);
 }

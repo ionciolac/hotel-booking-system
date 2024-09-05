@@ -27,7 +27,7 @@ public class BookingKafkaListener {
                                       @Header(KafkaHeaders.OFFSET) List<String> offsets) {
         log.info("{} number of create bookings received with keys: {}, partitions: {} and offsets: {}",
                 messages.size(), keys, partitions, offsets);
-        messages.forEach(bookingListener::consumer);
+        messages.forEach(bookingListener::bookingConsumer);
     }
 
     @KafkaListener(groupId = "${kafka-consumer-config.hotel-service-consumer-group-id}",
@@ -38,7 +38,7 @@ public class BookingKafkaListener {
                                       @Header(KafkaHeaders.OFFSET) List<String> offsets) {
         log.info("{} number of update bookings received with keys: {}, partitions: {} and offsets: {}",
                 messages.size(), keys, partitions, offsets);
-        messages.forEach(bookingListener::consumer);
+        messages.forEach(bookingListener::bookingConsumer);
     }
 
     @KafkaListener(groupId = "${kafka-consumer-config.hotel-service-consumer-group-id}",
@@ -49,6 +49,6 @@ public class BookingKafkaListener {
                                       @Header(KafkaHeaders.OFFSET) List<String> offsets) {
         log.info("{} number of delete bookings received with keys: {}, partitions: {} and offsets: {}",
                 messages.size(), keys, partitions, offsets);
-        messages.forEach(bookingListener::consumer);
+        messages.forEach(bookingListener::bookingConsumer);
     }
 }

@@ -67,7 +67,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
 
     @Transactional
     @Override
-    public void consumer(BookingMessage bookingMessage) {
+    public void bookingConsumer(BookingMessage bookingMessage) {
         var bookingMessageStatus = bookingMessage.status();
         switch (bookingMessageStatus) {
             case CREATE_BOOKING -> {
@@ -84,7 +84,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 var userId = bookingMessage.userId();
                 if (isRoomBooked(roomId, userId, searchFromDate, searchToDate)) {
                     bookingMessage = toBookingMessage(bookingMessage, FAILED_CREATE_BOOKING);
-                    bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+                    bookingPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
                 } else {
                     var nights = ChronoUnit.DAYS.between(fromDate, toDate);
                     var pricePerNight = room.getPricePerNight();
@@ -102,7 +102,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                     roomBooking.generateID();
                     roomBooking = roomBookingRoomOutPort.upsertRoomBooking(roomBooking);
                     bookingMessage = toBookingMessage(roomBooking, BOOKING_CREATED);
-                    bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+                    bookingPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
                 }
             }
             case UPDATE_BOOKING -> {
@@ -123,7 +123,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 roomBooking.setTotalPrice(nights * pricePerNight);
                 roomBooking = roomBookingRoomOutPort.upsertRoomBooking(roomBooking);
                 bookingMessage = toBookingMessage(roomBooking, BOOKING_UPDATED);
-                bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+                bookingPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
             }
             case REMOVE_BOOKING -> {
                 var id = bookingMessage.roomBookingId();
@@ -131,7 +131,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 bookingMessage = toBookingMessage(roomBooking, BOOKING_REMOVED);
                 roomBookingRoomOutPort.removeRoomBooking(id);
                 var topicName = hotelServiceConfigData.getRemovedBookingTopicName();
-                bookingPublisher.publish(topicName, bookingMessage.bookingId().toString(), bookingMessage);
+                bookingPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
             }
         }
     }
