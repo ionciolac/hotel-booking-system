@@ -19,8 +19,8 @@ import java.util.UUID;
 public class BookingResponse {
 
     private UUID id;
-    @JsonProperty("user_id")
-    private UUID userId;
+    @JsonProperty("customer_id")
+    private UUID customerId;
     @JsonProperty("hotel_id")
     private UUID hotelId;
     @JsonProperty("room_id")

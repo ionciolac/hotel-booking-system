@@ -31,8 +31,8 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
     @Override
     public HotelFeedback createHotelFeedback(HotelFeedback hotelFeedback) {
         var hotelId = hotelFeedback.getHotel().getId();
-        var userId = hotelFeedback.getUserId();
-        checkIfUserHasAddFeedbackToHotel(userId, hotelId);
+        var customerId = hotelFeedback.getCustomerId();
+        checkIfCustomerHasAddFeedbackToHotel(customerId, hotelId);
         var hotel = hotelInPort.getHotel(hotelId);
         hotelFeedback.setHotel(hotel);
         hotelFeedback.generateID();
@@ -73,17 +73,17 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, FEEDBACK, id));
     }
 
-    void checkIfUserHasAddFeedbackToHotel(UUID userId, UUID hotelId) {
-        if (hotelFeedbackOutPort.hasUserAddFeedbackToHotel(userId, hotelId))
-            throw new AlreadyExistException(format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, HOTEL, hotelId));
+    void checkIfCustomerHasAddFeedbackToHotel(UUID customerId, UUID hotelId) {
+        if (hotelFeedbackOutPort.hasCustomerAddFeedbackToHotel(customerId, hotelId))
+            throw new AlreadyExistException(format(SERVICE_CUSTOMER_ALREADY_ADDED_FEEDBACK_MESSAGE, customerId, HOTEL, hotelId));
     }
 
     void patch(HotelFeedback target, HotelFeedback source) {
-        if (hasText(source.getUserMessage())) {
-            target.setUserMessage(source.getUserMessage());
+        if (hasText(source.getCustomerMessage())) {
+            target.setCustomerMessage(source.getCustomerMessage());
         }
-        if (FEEDBACK_MARK_VALUES.contains(source.getUserMark())) {
-            target.setUserMark(source.getUserMark());
+        if (FEEDBACK_MARK_VALUES.contains(source.getCustomerMark())) {
+            target.setCustomerMark(source.getCustomerMark());
         }
     }
 }

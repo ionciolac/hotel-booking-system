@@ -43,11 +43,11 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
     private final RoomInPort roomInPort;
 
     @Override
-    public boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
+    public boolean checkIfRoomIsBooked(UUID roomId, UUID customerId, LocalDateTime fromDate, LocalDateTime toDate) {
         validateReservationDates(fromDate, toDate);
         var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, SYSTEM_CHECKIN_HOUR, 0);
         var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, SYSTEM_CHECKOUT_HOUR, 0);
-        return isRoomBooked(roomId, userId, searchFromDate, searchToDate);
+        return isRoomBooked(roomId, customerId, searchFromDate, searchToDate);
     }
 
     @Override
@@ -81,8 +81,8 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 validateReservationDates(fromDate, toDate);
                 var searchFromDate = addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0);
                 var searchToDate = addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0);
-                var userId = bookingMessage.userId();
-                if (isRoomBooked(roomId, userId, searchFromDate, searchToDate)) {
+                var customerId = bookingMessage.customerId();
+                if (isRoomBooked(roomId, customerId, searchFromDate, searchToDate)) {
                     bookingMessage = toBookingMessage(bookingMessage, FAILED_CREATE_BOOKING);
                     bookingPublisher.publishBooking(topicName, bookingMessage.bookingId().toString(), bookingMessage);
                 } else {
@@ -90,7 +90,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                     var pricePerNight = room.getPricePerNight();
                     var roomBooking = RoomBooking.builder()
                             .room(room)
-                            .userId(userId)
+                            .customerId(customerId)
                             .bookingId(bookingMessage.bookingId())
                             .fromDate(addHourAndMinutesToYYYYmmDD(fromDate, checkinHour, 0))
                             .toDate(addHourAndMinutesToYYYYmmDD(toDate, checkoutHour, 0))
@@ -144,9 +144,9 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, BOOKING, id));
     }
 
-    private boolean isRoomBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
+    private boolean isRoomBooked(UUID roomId, UUID customerId, LocalDateTime fromDate, LocalDateTime toDate) {
         roomInPort.getRoom(roomId);
-        return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, userId, fromDate, toDate);
+        return roomBookingRoomOutPort.checkIfRoomIsBooked(roomId, customerId, fromDate, toDate);
     }
 
     private void validateReservationDates(LocalDateTime fromDate, LocalDateTime toDate) {
@@ -169,7 +169,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 .bookingId(roomBooking.getBookingId())
                 .roomBookingId(roomBooking.getId())
                 .roomId(roomBooking.getRoom().getId())
-                .userId(roomBooking.getUserId())
+                .customerId(roomBooking.getCustomerId())
                 .fromDate(roomBooking.getFromDate())
                 .toDate(roomBooking.getToDate())
                 .status(status)
@@ -181,7 +181,7 @@ public class BookingRoomService implements BookingRoomInPort, BookingListener {
                 .bookingId(bookingMessage.bookingId())
                 .roomBookingId(bookingMessage.roomBookingId())
                 .roomId(bookingMessage.roomId())
-                .userId(bookingMessage.userId())
+                .customerId(bookingMessage.customerId())
                 .fromDate(bookingMessage.fromDate())
                 .toDate(bookingMessage.toDate())
                 .status(status)

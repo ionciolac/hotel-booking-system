@@ -16,8 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public abstract class Feedback extends BaseId {
 
-    private UUID userId;
-    private String userFullName;
-    private String userMessage;
-    private double userMark;
+    private UUID customerId;
+    private String customerFullName;
+    private String customerMessage;
+    private double customerMark;
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface RoomFeedbackRepository extends JpaRepository<RoomFeedbackEntity, UUID> {
 
-    boolean existsByUserIdAndRoomId(UUID userId, UUID roomId);
+    boolean existsByCustomerIdAndRoomId(UUID customerId, UUID roomId);
 
     Page<RoomFeedbackEntity> findAllByRoomId(UUID roomId, Pageable pageable);
 }

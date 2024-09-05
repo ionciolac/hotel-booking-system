@@ -24,7 +24,7 @@ import static java.lang.String.format;
 @NoArgsConstructor
 public class Booking extends BaseId {
 
-    private UUID userId;
+    private UUID customerId;
     private UUID hotelId;
     private UUID roomId;
     private UUID roomBookingId;

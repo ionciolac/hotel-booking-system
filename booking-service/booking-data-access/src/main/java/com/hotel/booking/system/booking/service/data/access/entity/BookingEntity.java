@@ -23,7 +23,7 @@ public class BookingEntity extends EntityAuditing {
 
     @Id
     private UUID id;
-    private UUID userId;
+    private UUID customerId;
     private UUID hotelId;
     private UUID roomId;
     private UUID roomBookingId;

@@ -17,8 +17,8 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class FeedbackEntity extends EntityAuditing {
 
-    private UUID userId;
-    private String userFullName;
-    private String userMessage;
-    private double userMark;
+    private UUID customerId;
+    private String customerFullName;
+    private String customerMessage;
+    private double customerMark;
 }

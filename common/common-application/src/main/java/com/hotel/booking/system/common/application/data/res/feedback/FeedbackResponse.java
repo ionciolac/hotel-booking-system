@@ -19,11 +19,11 @@ public class FeedbackResponse {
 
     private UUID id;
     @JsonProperty("user_id")
-    private UUID userId;
-    @JsonProperty("user_full_name")
-    private String userFullName;
-    @JsonProperty("user_message")
-    private String userMessage;
-    @JsonProperty("user_mark")
-    private FeedbackMark userMark;
+    private UUID customerId;
+    @JsonProperty("customer_full_name")
+    private String customerFullName;
+    @JsonProperty("customer_message")
+    private String customerMessage;
+    @JsonProperty("customer_mark")
+    private FeedbackMark customerMark;
 }

@@ -38,8 +38,8 @@ public class BookingPersistenceAdapter implements BookingOutPort {
     }
 
     @Override
-    public Optional<Booking> getBooking(UUID userId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
-        return bookingRepository.findByUserIdAndRoomIdAndFromDateAndToDate(userId, roomId, fromDate, toDate)
+    public Optional<Booking> getBooking(UUID customerId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate) {
+        return bookingRepository.findByCustomerIdAndRoomIdAndFromDateAndToDate(customerId, roomId, fromDate, toDate)
                 .map(bookingPersistenceMapper::toBooking);
     }
 }

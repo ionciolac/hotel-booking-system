@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface BookingRoomInPort {
 
-    boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate);
+    boolean checkIfRoomIsBooked(UUID roomId, UUID customerId, LocalDateTime fromDate, LocalDateTime toDate);
 
     Page<AvailableRoom> getAvailableRooms(String country, String city, LocalDateTime fromDate, LocalDateTime toDate,
                                           Double minPricePerNight, Double maxPricePerNight, Pageable pageable);

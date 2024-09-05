@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, UUID> {
 
-    Optional<BookingEntity> findByUserIdAndRoomIdAndFromDateAndToDate(UUID userId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate);
+    Optional<BookingEntity> findByCustomerIdAndRoomIdAndFromDateAndToDate(UUID customerId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate);
 }

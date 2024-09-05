@@ -25,7 +25,7 @@ public class RoomBookingEntity extends EntityAuditing {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rooms_id", referencedColumnName = "id")
     private RoomEntity room;
-    private UUID userId;
+    private UUID customerId;
     private UUID bookingId;
     private LocalDateTime fromDate;
     private LocalDateTime toDate;

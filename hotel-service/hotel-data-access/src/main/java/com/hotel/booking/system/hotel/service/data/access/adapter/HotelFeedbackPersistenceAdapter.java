@@ -39,8 +39,8 @@ public class HotelFeedbackPersistenceAdapter implements HotelFeedbackOutPort {
     }
 
     @Override
-    public boolean hasUserAddFeedbackToHotel(UUID userId, UUID hotelId) {
-        return hotelFeedbackRepository.existsByUserIdAndHotelId(userId, hotelId);
+    public boolean hasCustomerAddFeedbackToHotel(UUID customerId, UUID hotelId) {
+        return hotelFeedbackRepository.existsByCustomerIdAndHotelId(customerId, hotelId);
     }
 
     @Override

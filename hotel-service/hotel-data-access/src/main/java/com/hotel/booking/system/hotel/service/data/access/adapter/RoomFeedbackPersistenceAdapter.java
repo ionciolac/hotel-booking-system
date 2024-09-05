@@ -39,8 +39,8 @@ public class RoomFeedbackPersistenceAdapter implements RoomFeedbackOutPort {
     }
 
     @Override
-    public boolean hasUserAddedFeedbackToRoom(UUID userId, UUID roomId) {
-        return roomFeedbackRepository.existsByUserIdAndRoomId(userId, roomId);
+    public boolean hasCustomerAddedFeedbackToRoom(UUID customerId, UUID roomId) {
+        return roomFeedbackRepository.existsByCustomerIdAndRoomId(customerId, roomId);
     }
 
     @Override

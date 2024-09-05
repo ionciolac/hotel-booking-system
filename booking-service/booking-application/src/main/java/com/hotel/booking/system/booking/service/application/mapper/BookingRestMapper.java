@@ -14,7 +14,7 @@ public interface BookingRestMapper {
     @Mapping(target = "roomBookingId", ignore = true)
     Booking toBooking(CreateBookingRequest createBookingRequest);
 
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "customerId", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "roomId", ignore = true)
     @Mapping(target = "roomBookingId", ignore = true)

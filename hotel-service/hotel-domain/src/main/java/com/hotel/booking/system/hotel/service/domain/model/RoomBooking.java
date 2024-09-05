@@ -18,7 +18,7 @@ import java.util.UUID;
 public class RoomBooking extends BaseId {
 
     private Room room;
-    private UUID userId;
+    private UUID customerId;
     private UUID bookingId;
     private LocalDateTime fromDate;
     private LocalDateTime toDate;

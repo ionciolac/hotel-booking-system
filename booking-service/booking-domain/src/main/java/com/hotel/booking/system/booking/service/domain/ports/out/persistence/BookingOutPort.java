@@ -14,5 +14,5 @@ public interface BookingOutPort {
 
     Optional<Booking> getBooking(UUID id);
 
-    Optional<Booking> getBooking(UUID userId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate);
+    Optional<Booking> getBooking(UUID customerId, UUID roomId, LocalDateTime fromDate, LocalDateTime toDate);
 }

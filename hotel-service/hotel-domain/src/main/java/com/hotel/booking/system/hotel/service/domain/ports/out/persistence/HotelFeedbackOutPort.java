@@ -15,7 +15,7 @@ public interface HotelFeedbackOutPort {
 
     Optional<HotelFeedback> getHotelFeedback(UUID id);
 
-    boolean hasUserAddFeedbackToHotel(UUID userId, UUID hotelId);
+    boolean hasCustomerAddFeedbackToHotel(UUID customerId, UUID hotelId);
 
     Page<HotelFeedback> getHotelFeedback(UUID hotelId, Pageable pageable);
 }

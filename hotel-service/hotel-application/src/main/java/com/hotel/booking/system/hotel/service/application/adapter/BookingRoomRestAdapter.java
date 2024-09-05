@@ -28,10 +28,10 @@ public class BookingRoomRestAdapter {
 
     @GetMapping("/is-room-available")
     public ResponseEntity<IsRoomBookedResponse> checkIfRoomIsBooked(@RequestParam("room_id") UUID roomId,
-                                                                    @RequestParam("user_id") UUID userId,
+                                                                    @RequestParam("customer_id") UUID customerId,
                                                                     @RequestParam("from_date") LocalDateTime fromDate,
                                                                     @RequestParam("to_date") LocalDateTime toDate) {
-        var isBooked = bookingRoomInPort.checkIfRoomIsBooked(roomId, userId, fromDate, toDate);
+        var isBooked = bookingRoomInPort.checkIfRoomIsBooked(roomId, customerId, fromDate, toDate);
         var result = IsRoomBookedResponse.builder().id(roomId).roomIsBooked(isBooked).build();
         return ResponseEntity.status(OK).body(result);
     }

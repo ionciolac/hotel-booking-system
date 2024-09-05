@@ -15,7 +15,7 @@ public interface RoomFeedbackOutPort {
 
     Optional<RoomFeedback> getRoomFeedback(UUID id);
 
-    boolean hasUserAddedFeedbackToRoom(UUID userId, UUID roomId);
+    boolean hasCustomerAddedFeedbackToRoom(UUID customerId, UUID roomId);
 
     Page<RoomFeedback> getRoomFeedbackPage(UUID roomId, Pageable pageable);
 }

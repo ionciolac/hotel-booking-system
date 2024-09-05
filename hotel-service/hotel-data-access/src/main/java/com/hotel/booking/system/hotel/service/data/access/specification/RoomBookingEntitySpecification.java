@@ -15,8 +15,8 @@ public class RoomBookingEntitySpecification {
         return (root, query, builder) -> builder.equal(root.get("room").get("id"), roomId);
     }
 
-    public static Specification<RoomBookingEntity> userIdFilter(UUID userId) {
-        return (root, query, builder) -> builder.notEqual(root.get("userId"), userId);
+    public static Specification<RoomBookingEntity> customerIdFilter(UUID customerId) {
+        return (root, query, builder) -> builder.notEqual(root.get("customerId"), customerId);
     }
 
     public static Specification<RoomBookingEntity> fromDateToDateFilter(LocalDateTime fromDate, LocalDateTime toDate) {

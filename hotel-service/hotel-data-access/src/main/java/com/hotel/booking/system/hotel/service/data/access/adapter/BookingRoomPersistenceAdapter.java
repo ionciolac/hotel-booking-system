@@ -31,10 +31,10 @@ public class BookingRoomPersistenceAdapter implements BookingRoomOutPort {
     }
 
     @Override
-    public boolean checkIfRoomIsBooked(UUID roomId, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
+    public boolean checkIfRoomIsBooked(UUID roomId, UUID customerId, LocalDateTime fromDate, LocalDateTime toDate) {
         var specification = Specification
                 .where(roomIdFilter(roomId))
-                .and(userIdFilter(userId))
+                .and(customerIdFilter(customerId))
                 .and(fromDateToDateFilter(fromDate, toDate));
         return !roomBookingRepository.findAll(specification).isEmpty();
     }

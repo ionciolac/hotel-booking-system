@@ -18,8 +18,8 @@ import java.util.UUID;
 public class UpdateFeedbackRequest {
 
     private UUID id;
-    @JsonProperty("user_message")
-    private String userMessage;
-    @JsonProperty("user_mark")
-    private FeedbackMark userMark;
+    @JsonProperty("customer_message")
+    private String customerMessage;
+    @JsonProperty("customer_mark")
+    private FeedbackMark customerMark;
 }

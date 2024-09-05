@@ -32,8 +32,8 @@ public class RoomFeedbackService implements RoomFeedbackInPort {
     @Override
     public RoomFeedback createRoomFeedback(RoomFeedback roomFeedback) {
         var roomId = roomFeedback.getRoom().getId();
-        var userId = roomFeedback.getUserId();
-        checkIfUserAlreadyAddedFeedback(userId, roomId);
+        var customerId = roomFeedback.getCustomerId();
+        checkIfCustomerAlreadyAddedFeedback(customerId, roomId);
         var room = roomInPort.getRoom(roomId);
         roomFeedback.setRoom(room);
         roomFeedback.generateID();
@@ -74,17 +74,17 @@ public class RoomFeedbackService implements RoomFeedbackInPort {
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, FEEDBACK, id));
     }
 
-    private void checkIfUserAlreadyAddedFeedback(UUID userId, UUID roomId) {
-        if (roomFeedbackOutPort.hasUserAddedFeedbackToRoom(userId, roomId))
-            throw new AlreadyExistException(format(SERVICE_USER_ALREADY_ADDED_FEEDBACK_MESSAGE, userId, ROOM, roomId));
+    private void checkIfCustomerAlreadyAddedFeedback(UUID customerId, UUID roomId) {
+        if (roomFeedbackOutPort.hasCustomerAddedFeedbackToRoom(customerId, roomId))
+            throw new AlreadyExistException(format(SERVICE_CUSTOMER_ALREADY_ADDED_FEEDBACK_MESSAGE, customerId, ROOM, roomId));
     }
 
     void patch(RoomFeedback target, RoomFeedback source) {
-        if (hasText(source.getUserMessage())) {
-            target.setUserMessage(source.getUserMessage());
+        if (hasText(source.getCustomerMessage())) {
+            target.setCustomerMessage(source.getCustomerMessage());
         }
-        if (FEEDBACK_MARK_VALUES.contains(source.getUserMark())) {
-            target.setUserMark(source.getUserMark());
+        if (FEEDBACK_MARK_VALUES.contains(source.getCustomerMark())) {
+            target.setCustomerMark(source.getCustomerMark());
         }
     }
 }

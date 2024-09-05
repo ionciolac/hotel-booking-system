@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface HotelFeedbackRepository extends JpaRepository<HotelFeedbackEntity, UUID> {
 
-    boolean existsByUserIdAndHotelId(UUID userId, UUID hotelId);
+    boolean existsByCustomerIdAndHotelId(UUID customerId, UUID hotelId);
 
     Page<HotelFeedbackEntity> findAllByHotelId(UUID hotelId, Pageable pageable);
 }

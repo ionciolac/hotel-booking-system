@@ -54,7 +54,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         var dbBooking = getBookingFromDB(booking.getId());
         dbBooking.checkIfAtLeastOneDateWasChanged(dbBooking, booking);
         booking.setRoomId(dbBooking.getRoomId());
-        booking.setUserId(dbBooking.getUserId());
+        booking.setCustomerId(dbBooking.getCustomerId());
         var isRoomBooked = isRoomBookedInHotelService(booking);
         dbBooking.checkIfRoomIsBookedThenThrowException(isRoomBooked, booking);
         var bookingStatus = dbBooking.getStatus();
@@ -158,21 +158,21 @@ public class BookingService implements BookingInPort, BookingRoomListener {
     }
 
     private void validateIfBookingExist(Booking booking) {
-        var userId = booking.getUserId();
+        var customerId = booking.getCustomerId();
         var roomId = booking.getRoomId();
         var fromDate = booking.getFromDate();
         var toDate = booking.getToDate();
-        if (bookingOutPort.getBooking(userId, roomId, fromDate, toDate).isPresent())
-            throw new BadRequestException(format(SERVICE_BOOKING_IS_ALREADY_EXIST_MESSAGE, roomId, userId, fromDate, toDate));
+        if (bookingOutPort.getBooking(customerId, roomId, fromDate, toDate).isPresent())
+            throw new BadRequestException(format(SERVICE_BOOKING_IS_ALREADY_EXIST_MESSAGE, roomId, customerId, fromDate, toDate));
     }
 
     private boolean isRoomBookedInHotelService(Booking booking) {
-        return isRoomBookedInHotelService(booking.getRoomId(), booking.getUserId(), booking.getFromDate(),
+        return isRoomBookedInHotelService(booking.getRoomId(), booking.getCustomerId(), booking.getFromDate(),
                 booking.getToDate());
     }
 
-    private boolean isRoomBookedInHotelService(UUID roomID, UUID userId, LocalDateTime fromDate, LocalDateTime toDate) {
-        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, userId, fromDate, toDate).getBody())
+    private boolean isRoomBookedInHotelService(UUID roomID, UUID customerId, LocalDateTime fromDate, LocalDateTime toDate) {
+        return requireNonNull(hotelServiceClient.checkIfRoomIsBooked(roomID, customerId, fromDate, toDate).getBody())
                 .isRoomIsBooked();
     }
 
@@ -198,7 +198,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
                 .bookingId(booking.getId())
                 .roomBookingId(booking.getRoomBookingId())
                 .roomId(booking.getRoomId())
-                .userId(booking.getUserId())
+                .customerId(booking.getCustomerId())
                 .fromDate(booking.getFromDate())
                 .toDate(booking.getToDate())
                 .status(status)

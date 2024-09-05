@@ -11,14 +11,14 @@ import org.mapstruct.Mapping;
 public interface RoomFeedbackRestMapper extends FeedbackRestMapper {
 
     @Mapping(target = "room.id", source = "roomId")
-    @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromValueToEnum")
+    @Mapping(target = "customerMark", source = "customerMark", qualifiedByName = "fromValueToEnum")
     RoomFeedback toRoomFeedback(CreateRoomFeedbackRequest createRoomFeedbackRequest);
 
     @Mapping(target = "room", ignore = true)
-    @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromValueToEnum")
+    @Mapping(target = "customerMark", source = "customerMark", qualifiedByName = "fromValueToEnum")
     RoomFeedback toRoomFeedback(UpdateRoomFeedbackRequest updateRoomFeedbackRequest);
 
     @Mapping(target = "roomId", source = "room.id")
-    @Mapping(target = "userMark", source = "userMark", qualifiedByName = "fromEnumToValue")
+    @Mapping(target = "customerMark", source = "customerMark", qualifiedByName = "fromEnumToValue")
     RoomFeedbackResponse toRoomFeedbackResponse(RoomFeedback roomFeedback);
 }
