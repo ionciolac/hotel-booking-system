@@ -32,7 +32,7 @@ public class CustomerRestAdapter {
         return ResponseEntity.status(CREATED).body(customerRestAdapterMapper.toCustomerResponse(customer));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<CustomerResponse> updateCustomer(@RequestBody UpdateCustomerRequest req) {
         var customer = customerInPort.updateCustomer(customerRestAdapterMapper.toCustomer(req));
         return ResponseEntity.status(OK).body(customerRestAdapterMapper.toCustomerResponse(customer));

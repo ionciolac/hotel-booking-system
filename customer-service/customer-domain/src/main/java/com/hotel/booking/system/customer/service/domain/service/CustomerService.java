@@ -33,11 +33,8 @@ public class CustomerService implements CustomerInPort {
     public Customer updateCustomer(Customer customer) {
         var customerId = customer.getId();
         var dbCustomer = getDBCustomer(customerId);
-        var customerAddressId = dbCustomer.getAddress().getId();
-        var customerAddress = customer.getAddress();
-        customerAddress.setId(customerAddressId);
-        customer.setAddress(customerAddress);
-        return customerOutPort.upsertCustomer(customer);
+        dbCustomer.patch(dbCustomer, customer);
+        return customerOutPort.upsertCustomer(dbCustomer);
     }
 
     @Override

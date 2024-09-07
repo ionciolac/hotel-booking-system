@@ -28,4 +28,6 @@ public class CreateCustomerRequest {
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
     private AddressRequest address;
+    @JsonProperty("customer_currency")
+    private String customerCurrency;
 }

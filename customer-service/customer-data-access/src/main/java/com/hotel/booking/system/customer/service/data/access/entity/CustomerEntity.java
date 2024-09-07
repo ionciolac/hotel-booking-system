@@ -35,4 +35,6 @@ public class CustomerEntity extends EntityAuditing {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_address_id", referencedColumnName = "id")
     private CustomerAddressEntity address;
+    @Column(name = "customer_currency")
+    private String customerCurrency;
 }

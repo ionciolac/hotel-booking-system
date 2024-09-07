@@ -26,4 +26,6 @@ public class CustomerResponse {
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
     private AddressResponse address;
+    @JsonProperty("customer_currency")
+    private String customerCurrency;
 }
