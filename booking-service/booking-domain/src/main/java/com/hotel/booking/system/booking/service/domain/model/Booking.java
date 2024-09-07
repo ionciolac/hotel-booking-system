@@ -69,4 +69,13 @@ public class Booking extends BaseId {
         if (fromDate.equals(newFromDate) && toDate.equals(newToDate))
             throw new BadRequestException(SERVICE_VALIDATE_IF_DATES_WAS_CHANGED_ON_UPDATE_MESSAGE);
     }
+
+    public void patch(Booking target, Booking source) {
+        if (source.getFromDate() != null) {
+            target.setFromDate(source.getFromDate());
+        }
+        if (source.getToDate() != null) {
+            target.setToDate(source.getToDate());
+        }
+    }
 }

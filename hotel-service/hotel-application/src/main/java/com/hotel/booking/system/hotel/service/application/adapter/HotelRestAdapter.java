@@ -32,7 +32,7 @@ public class HotelRestAdapter {
         return ResponseEntity.status(CREATED).body(hotelRestMapper.toHotelResponse(hotel));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<HotelResponse> updateHotel(@RequestBody UpdateHotelRequest req) {
         var hotel = hotelInPort.updateHotel(hotelRestMapper.toHotel(req));
         return ResponseEntity.status(OK).body(hotelRestMapper.toHotelResponse(hotel));

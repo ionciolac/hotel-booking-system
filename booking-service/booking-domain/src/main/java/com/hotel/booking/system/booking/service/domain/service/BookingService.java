@@ -60,7 +60,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
         var bookingStatus = dbBooking.getStatus();
         switch (bookingStatus) {
             case RESERVED -> {
-                patch(dbBooking, booking);
+                dbBooking.patch(dbBooking, booking);
                 dbBooking = bookingOutPort.upsertBooking(dbBooking);
             }
             case BOOKED -> {
@@ -144,7 +144,7 @@ public class BookingService implements BookingInPort, BookingRoomListener {
                         .fromDate(bookingMessage.fromDate())
                         .toDate(bookingMessage.toDate())
                         .build();
-                patch(dbBooking, booking);
+                dbBooking.patch(dbBooking, booking);
                 dbBooking.setStatus(BOOKED);
                 bookingOutPort.upsertBooking(dbBooking);
             }
@@ -182,15 +182,6 @@ public class BookingService implements BookingInPort, BookingRoomListener {
             return booking.get();
         else
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, BOOKING, id));
-    }
-
-    private void patch(Booking target, Booking source) {
-        if (source.getFromDate() != null) {
-            target.setFromDate(source.getFromDate());
-        }
-        if (source.getToDate() != null) {
-            target.setToDate(source.getToDate());
-        }
     }
 
     private BookingMessage toBookingMessage(Booking booking, BookingMessageStatus status) {

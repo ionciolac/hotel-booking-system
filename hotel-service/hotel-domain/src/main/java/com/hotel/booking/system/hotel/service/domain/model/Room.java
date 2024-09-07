@@ -26,4 +26,13 @@ public class Room extends BaseId {
     private String currency;
 
     private Set<RoomBooking> roomBookings;
+
+    public void patch(Room target, Room source) {
+        if (source.getIsRoomAvailable() != null) {
+            target.setIsRoomAvailable(source.getIsRoomAvailable());
+        }
+        if (source.getPricePerNight() != 0) {
+            target.setPricePerNight(source.getPricePerNight());
+        }
+    }
 }

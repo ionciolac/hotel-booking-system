@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static com.hotel.booking.system.common.common.utils.AppCommonMessages.*;
-import static com.hotel.booking.system.common.common.utils.AppConstants.FEEDBACK_MARK_VALUES;
 import static java.lang.String.format;
-import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
 @Service
@@ -44,7 +42,7 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
     public HotelFeedback updateHotelFeedback(HotelFeedback hotelFeedback) {
         var id = hotelFeedback.getId();
         var dbHotelFeedback = getDBFeedback(id);
-        patch(dbHotelFeedback, hotelFeedback);
+        dbHotelFeedback.patch(dbHotelFeedback, hotelFeedback);
         return hotelFeedbackOutPort.upsertHotelFeedback(dbHotelFeedback);
     }
 
@@ -76,14 +74,5 @@ public class HotelFeedbackService implements HotelFeedbackInPort {
     void checkIfCustomerHasAddFeedbackToHotel(UUID customerId, UUID hotelId) {
         if (hotelFeedbackOutPort.hasCustomerAddFeedbackToHotel(customerId, hotelId))
             throw new AlreadyExistException(format(SERVICE_CUSTOMER_ALREADY_ADDED_FEEDBACK_MESSAGE, customerId, HOTEL, hotelId));
-    }
-
-    void patch(HotelFeedback target, HotelFeedback source) {
-        if (hasText(source.getCustomerMessage())) {
-            target.setCustomerMessage(source.getCustomerMessage());
-        }
-        if (FEEDBACK_MARK_VALUES.contains(source.getCustomerMark())) {
-            target.setCustomerMark(source.getCustomerMark());
-        }
     }
 }

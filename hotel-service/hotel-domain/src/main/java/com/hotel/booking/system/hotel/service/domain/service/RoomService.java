@@ -44,7 +44,7 @@ public class RoomService implements RoomInPort {
     @Override
     public Room updateRoom(Room room) {
         Room dbRoom = getDBRoom(room.getId());
-        patch(dbRoom, room);
+        dbRoom.patch(dbRoom, room);
         return roomOutPort.upsertRoom(dbRoom);
     }
 
@@ -85,14 +85,5 @@ public class RoomService implements RoomInPort {
             return room.get();
         else
             throw new NotFoundException(format(SERVICE_OBJECT_WAS_NOT_FOUND_IN_DB_MESSAGE, ROOM, id));
-    }
-
-    private void patch(Room target, Room source) {
-        if (source.getIsRoomAvailable() != null) {
-            target.setIsRoomAvailable(source.getIsRoomAvailable());
-        }
-        if (source.getPricePerNight() != 0) {
-            target.setPricePerNight(source.getPricePerNight());
-        }
     }
 }

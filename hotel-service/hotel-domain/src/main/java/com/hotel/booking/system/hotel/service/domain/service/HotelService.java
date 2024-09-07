@@ -35,11 +35,8 @@ public class HotelService implements HotelInPort {
     public Hotel updateHotel(Hotel hotel) {
         var id = hotel.getId();
         var dbHotel = getDBHotel(id);
-        var hotelAddressId = dbHotel.getAddress().getId();
-        var hotelAddress = hotel.getAddress();
-        hotelAddress.setId(hotelAddressId);
-        hotel.setAddress(hotelAddress);
-        return hotelOutPort.upsertHotel(hotel);
+        dbHotel.patch(dbHotel, hotel);
+        return hotelOutPort.upsertHotel(dbHotel);
     }
 
     @Transactional
